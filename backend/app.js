@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://simon:sisi1992@cluster0.76ulj.mongodb.net/test?retryWrites=true&w=majority',
+const bodyParser = require('body-parser');
+const userRoutes = require('./routes/user');
+mongoose.connect('mongodb+srv://simon:mdpPourLeP6@cluster0.76ulj.mongodb.net/test?retryWrites=true&w=majority',
 {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -19,4 +21,7 @@ app.use((req, res, next) => {
 });
 app.use(bodyParser.json());
 
+
+app.use ('/api/auth', userRoutes);
 module.exports = app;
+
