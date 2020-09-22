@@ -1,7 +1,10 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const path = require('path')
 const userRoutes = require('./routes/user');
+const saucesRoutes = require('./routes/stuff')
+
 mongoose.connect('mongodb+srv://simon:mdpPourLeP6@cluster0.76ulj.mongodb.net/test?retryWrites=true&w=majority',
 {
     useNewUrlParser: true,
@@ -19,9 +22,15 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS'); // envoyer les requêtes avec les méthodes get post ...
     next();
 });
+
 app.use(bodyParser.json());
 
+//affiche les images sans le path
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
+
+app.use('/api/sauces', saucesRoutes)
 app.use ('/api/auth', userRoutes);
+
 module.exports = app;
 
