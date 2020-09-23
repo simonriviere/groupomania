@@ -28,7 +28,7 @@ exports.modifySauce = (req, res, next) => {
             imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
         } : { ...req.body };
     Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
-        .then(() => res.status(200).json({ message: 'Objet modifié !' }))
+        .then(() => res.status(201).json({ message: 'Objet modifié !' }))
         .catch(error => res.status(400).json({ error }));
 };
 
@@ -61,10 +61,12 @@ exports.getOneSauce = (req, res, next) => {
 }
 //toutes les sauces
 exports.getAllSauce = (req, res, next) => {
+
     Sauce.find().then(
-        (Sauces) => res.status(200).json(Sauces))
+        (Sauces) => res.status(200).json(Sauces) 
+        )
         .catch(
             error => res.status(400).json({
                 error
-            }))
+            }))  
 }

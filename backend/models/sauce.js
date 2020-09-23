@@ -14,4 +14,5 @@ usersLiked:{type : [String]},
 usersDisliked:{type : [String]}
 });
 
+
 module.exports = mongoose.model('Sauce', sauceSchema);
