@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const path = require('path')
 const userRoutes = require('./routes/user');
 const saucesRoutes = require('./routes/stuff');
-const likeRoutes = require('./routes/like')
+
 mongoose.connect('mongodb+srv://simon:mdpPourLeP6@cluster0.76ulj.mongodb.net/piquant?retryWrites=true&w=majority',
 {
     useNewUrlParser: true,
@@ -31,6 +31,6 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.use('/api/sauces', saucesRoutes)
 app.use ('/api/auth', userRoutes);
-app.use('/api/sauces/', likeRoutes)
+
 module.exports = app;
 
