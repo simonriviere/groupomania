@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path')
 const userRoutes = require('./routes/user');
-const saucesRoutes = require('./routes/stuff');
+const saucesRoutes = require('./routes/sauce');
 
 mongoose.connect('mongodb+srv://simon:mdpPourLeP6@cluster0.76ulj.mongodb.net/piquant?retryWrites=true&w=majority',
 {
