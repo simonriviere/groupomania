@@ -3,6 +3,7 @@ const router = express.Router();
 const stuffCtrl = require('../controllers/sauce');
 
 const auth = require ('../middleware/auth');
+
 const multer = require('../middleware/multer-config'); //accepte les fichiers entrants
 
 //post une sauce
