@@ -1,5 +1,4 @@
 const passwordValidator = require('password-validator');
- 
 
 let passwordSchema = new passwordValidator();
 
@@ -10,6 +9,8 @@ passwordSchema
 .has().lowercase()                              // Doit avoir des lettres minuscule
 .has().digits(2)                                // Doit avoir deux chiffres
 .has().not().spaces()                           // espace interdit
-.is().not().oneOf(['Passw0rd', 'Password123']); //valeurs interdit
- 
+.is().not().oneOf(['Passw0rd', 'Password123']) //valeurs interdit
+//.has().symbols(`~\\!@#\\$%\\^\\&\\*\\(\\)\\-_\\=\\+\\[\\\{\\}\\]\\\\\|;:\\\'",<.>\\/\\?€£¥₹§±].*`);
+
+
 module.exports = passwordSchema; 

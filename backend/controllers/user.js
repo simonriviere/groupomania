@@ -6,8 +6,7 @@ const passwordValidator = require('../middleware/passwordValidator');
 
 exports.signup = (req, res, next) => {
 if (!passwordValidator.validate(req.body.password)) {
-
-return res.status(401).json({ error: 'format du mot de passe incorrect' });
+return res.status(401).json({ error: 'format du mot de passe incorrect. il faut minimum :  8 caractères, une majuscule, une minuscule, 2chiffres' });
 }else{
     bcrypt.hash(req.body.password, 10)
     .then(hash => {

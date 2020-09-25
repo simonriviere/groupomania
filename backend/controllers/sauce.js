@@ -78,7 +78,6 @@ exports.likeSauce = (req, res, next) => {
 
     if (req.body.like === 1) {
         Sauce.updateOne({ _id: req.params.id }, { $inc: { likes: 1 }, $push: { usersLiked: req.body.userId }, _id: req.params.id, })
-
             .then(
                 () => res.status(201).json({
                     message: "L'utilisateur aime la sauce"
