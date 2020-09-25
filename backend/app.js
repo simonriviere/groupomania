@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const path = require('path')
 const userRoutes = require('./routes/user');
 const saucesRoutes = require('./routes/sauce');
+const helmet = require('helmet');
 
 mongoose.connect('mongodb+srv://simon:mdpPourLeP6@cluster0.76ulj.mongodb.net/piquant?retryWrites=true&w=majority',
 {
@@ -15,6 +16,7 @@ mongoose.connect('mongodb+srv://simon:mdpPourLeP6@cluster0.76ulj.mongodb.net/piq
 
 const app = express();
 
+app.use(helmet()); //protège les vulnérabilité d'en tête HTPP
 // gérer les erreurs CROS, ajout de middleware qui s'appliquera à toute les routes
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*'); //accéder à notre api depuis n'importe quelle origine '*'

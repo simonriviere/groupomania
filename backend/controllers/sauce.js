@@ -114,7 +114,7 @@ exports.likeSauce = (req, res, next) => {
                                 error
                             }));
                 } else if (sauce.usersDisliked.includes(req.body.userId)) {
-                    Sauce.updateOne({ _id: req.params.id }, { $inc: { dislikes: -1 }, $pull: { userDisliked: req.body.userId }, _id: req.params.id, })
+                    Sauce.updateOne({ _id: req.params.id }, { $inc: { dislikes: -1 }, $pull: { usersDisliked: req.body.userId }, _id: req.params.id, })
                         .then(
                             () => res.status(201).json({
                                 message: "L'utilisateur a enlevé son dislike"

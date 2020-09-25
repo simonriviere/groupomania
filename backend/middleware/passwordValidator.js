@@ -2,8 +2,7 @@ const passwordValidator = require('password-validator');
  
 
 let passwordSchema = new passwordValidator();
- 
-// Add properties to it
+
 passwordSchema
 .is().min(8)                                    // Minimum length 8
 .is().max(100)                                  // Maximum length 100
@@ -12,7 +11,5 @@ passwordSchema
 .has().digits(2)                                // Doit avoir deux chiffres
 .has().not().spaces()                           // espace interdit
 .is().not().oneOf(['Passw0rd', 'Password123']); //valeurs interdit
- 
-
  
 module.exports = passwordSchema; 
