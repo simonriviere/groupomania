@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path'); //pour la gestion des fichiers envoyé par l'utilisateur
-
+const userRoutes = require('./routes/user');
 const articleRoutes= require('./routes/article')
 const app = express();
 app.use(bodyParser.json());
@@ -13,8 +13,9 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/articles', articleRoutes)
-
+app.use('/api/auth', userRoutes);
 
 
 
