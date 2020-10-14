@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const path = require('path'); //pour la gestion des fichiers envoyé par l'utilisateur
 const userRoutes = require('./routes/user');
 const articleRoutes= require('./routes/article')
+const comRoutes= require('./routes/com')
 const app = express();
 app.use(bodyParser.json());
 // gérer les erreurs CROS, ajout de middleware qui s'appliquera à toute les routes
@@ -16,7 +17,7 @@ app.use((req, res, next) => {
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/articles', articleRoutes)
 app.use('/api/auth', userRoutes);
-
+app.use('/api/commentaire', comRoutes)
 
 
 module.exports = app;

@@ -23,6 +23,7 @@ module.exports = function(sequelize, DataTypes) {
 
     }, {
       tableName: 'User',
-      freezeTableName: true
+      freezeTableName: true,
+      timestamps: false
     });
   };

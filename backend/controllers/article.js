@@ -13,30 +13,37 @@ try {
 const Article = require('../models/article')(sequelize, DataTypes);
 
 exports.createArticle = (req, res, next) => {
-
   const createArticle = req.body
-  delete createArticle._id;
   // l'id est fournis automatiquement du coup on ne récupère pas celui du front
   const article = new Article({
     ...createArticle,
     //image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
   })
-  sequelize.query(`INSERT INTO Articles (titre, commentaire, image, userId) VALUES('${article.titre}','${article.commentaire}','${article.image}','${article.userId}') `)
+  sequelize.query(`INSERT INTO Articles (titre, message, image, dateCreation, dateModification, userId) VALUES('${article.titre}','${article.message}','${article.image}',LOCALTIME, null,'${article.userId}') `)
     .then(() => res.status(201).json({ message: 'Objet enregistré !' }))
     .catch(error => res.status(400).json({ error }));
 };
 
 exports.modifyArticle = (req, res, next) => {
-  const article = req.body
-  sequelize.query(`UPDATE Articles SET titre='${article.titre}',commentaire='${article.commentaire}',image='${article.image}' WHERE id= '${req.params.id}'`)
-    .then(() => res.status(200).json({ message: 'Objet modifié !' }))
-    .catch(error => res.status(400).json({ error }));
+  if (req.body.userId == null) {
+    return res.status(401).send({ error : "userId pas définit"});
+  } else {
+    const article = req.body
+    sequelize.query(`UPDATE Articles SET titre='${article.titre}',message='${article.message}',image='${article.image}', dateModification = LOCALTIME, userId='${article.userId}' WHERE id= '${req.params.id}'`)
+      .then(() => res.status(200).json({ message: 'Objet modifié !' }))
+      .catch(error => res.status(400).json({ error }));
+  }
 };
 
 exports.deleteArticle = (req, res, next) => {
-  sequelize.query(`DELETE FROM Articles WHERE id ='${req.params.id}' `)
-    .then(() => res.status(200).json({ message: 'Objet supprimé !' }))
-    .catch(error => res.status(400).json({ error }));
+  if (req.body.userId == null) {
+    return res.status(401).send({ error });
+  } else {
+    sequelize.query(`DELETE FROM Articles WHERE id ='${req.params.id}' `)
+      .then(() => res.status(200).json({ message: 'Objet supprimé !' }))
+      .catch(error => res.status(400).json({ error }));
+  }
+
 };
 
 exports.getOneArticle = (req, res, next) => {
