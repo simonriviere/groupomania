@@ -48,7 +48,7 @@ exports.deleteArticle = (req, res, next) => {
 
 exports.getOneArticle = (req, res, next) => {
   console.log(req.params.id)
-  sequelize.query(`SELECT * FROM Articles WHERE id ='${req.params.id}'`)
+  sequelize.query(`SELECT * FROM Articles WHERE id ='${req.params.id}'`,{ type: Sequelize.QueryTypes.SELECT })
     //Article.findOne({ _id: req.params.id })
     .then(
       (article) => res.status(200).json(article))
@@ -59,7 +59,7 @@ exports.getOneArticle = (req, res, next) => {
 }
 
 exports.getAllArticle = (req, res, next) => {
-  sequelize.query("SELECT * FROM Articles")
-    .then(articles => res.status(200).json(articles))
+ sequelize.query("SELECT * FROM Articles", { type: Sequelize.QueryTypes.SELECT })
+    .then(articles => res.status(200).json({articles}))
     .catch(error => res.status(400).json({ error }));
 };
