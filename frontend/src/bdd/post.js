@@ -13,7 +13,7 @@ export function Post(data, url) {
 
  
 export async function allArticles(url) {
-   let response = await fetch('http://localhost:3000/api/articles',{
+   let response = await fetch(url,{
       method : 'GET',
       headers : {  
         'Content-Type': 'application/json',
@@ -26,6 +26,5 @@ export async function allArticles(url) {
    } else {
       console.error('Retour du server : ', response.status)
    }
-
 }
-allArticles('http://localhost:3000/api/articles')
+

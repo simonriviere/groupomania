@@ -31,7 +31,7 @@ export class Signup extends Component {
         e.preventDefault()
         const data = JSON.stringify(this.state)
         Post(data,  "http://localhost:3000/api/auth/signup")
-        allArticles()
+       
     }
     render() {
         return <form className="container" onSubmit={this.handleSubmit}>
@@ -40,8 +40,7 @@ export class Signup extends Component {
             <div className="form-group ">
                 <button className="btn btn-primary">Envoyer</button>
             </div>
-            {JSON.stringify(this.state)}
-        </form>
+            </form>
     }
 }
 export class Login extends Component {
@@ -65,7 +64,8 @@ export class Login extends Component {
         e.preventDefault()
         const data = JSON.stringify(this.state)
         Post(data, "http://localhost:3000/api/auth/login")
-    } 
+        allArticles('http://localhost:3000/api/articles')
+        } 
     render() {
         return <form className="container" onSubmit={this.handleSubmit}>
             <Field name="email" value={this.state.email} onChange={this.handleChange}>Email</Field>
