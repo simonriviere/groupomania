@@ -1,33 +1,65 @@
-import React from 'react';
-import {Clock} from'./Clock';
-import {Signup} from'./connection';
-import {Login} from './connection';
-//import{Formulaire} from './form';
-
+import React, {Component} from 'react'
+import { BrowserRouter, Route, Link } from "react-router-dom";
+import {Signup} from'./components/signup';
+import {Login} from './components/login'; 
+import{Article} from './components/articles'
 import './App.css';
+function UserConnect() {
+  return <li>
+     <Link to="/article">Article</Link>
+  </li>
+    
+}
+function Connect() {
 
- function App() {
-  return (<div>
+  if (localStorage.length === 1) {
+    return <UserConnect />
+  }
 
-    <div className="App ">
-    <Clock/>
-    nav
-    </div>
-    <div className="SignUp">
-      <h2>S'enregistrer</h2>
-      <Signup/>
-    </div>
-    <h2>Se connecter</h2>
-    <div className="Login">
-      <Login/>
-    </div>
+}
+class App extends Component {
 
-    <div className="article"></div>
-  </div>
-
-  );
+  render()  {
+    return  (
+      <BrowserRouter>
+        <div>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            {localStorage.length === 1 &&<> <li>  <Link to="/article">Article</Link></li> </>}
+            
+            
+        </ul>
+          <hr />
+          <div className="main-route-place">
+            <Route exact path="/" component={Home} />
+            <Route path="/signup" component={Signup} />
+            <Route path="/login" component={Login} />
+            <Route path="/article" component={Article} />
+          </div>
+        </div>
+      </BrowserRouter>
+    );
+  }
+ 
+}
+class Home extends Component {
+ 
+  render()  {
+    return (
+      <div>
+        <h2>Home</h2>
+        <ul>
+          <li> <Link to="/signup">S'enregistrer</Link> </li>
+          <li> <Link to="/login">Connection</Link></li>
+        </ul>
+      
+       
+      </div>
+    );
+  }
 }
 
 
-export default App; 
-
+export default App;
