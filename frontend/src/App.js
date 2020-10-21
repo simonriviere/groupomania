@@ -4,19 +4,7 @@ import {Signup} from'./components/signup';
 import {Login} from './components/login'; 
 import{Article} from './components/articles'
 import './App.css';
-function UserConnect() {
-  return <li>
-     <Link to="/article">Article</Link>
-  </li>
-    
-}
-function Connect() {
 
-  if (localStorage.length === 1) {
-    return <UserConnect />
-  }
-
-}
 class App extends Component {
 
   render()  {
@@ -27,16 +15,14 @@ class App extends Component {
             <li>
               <Link to="/">Home</Link>
             </li>
-            {localStorage.length === 1 &&<> <li>  <Link to="/article">Article</Link></li> </>}
-            
-            
+            {localStorage.length === 1 && <> <li>  <Link to="/articles">Article</Link></li> </>}
         </ul>
           <hr />
           <div className="main-route-place">
             <Route exact path="/" component={Home} />
             <Route path="/signup" component={Signup} />
             <Route path="/login" component={Login} />
-            <Route path="/article" component={Article} />
+            <Route path="/articles" component={Article} />
           </div>
         </div>
       </BrowserRouter>

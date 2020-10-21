@@ -51,7 +51,7 @@ exports.getOneArticle = (req, res, next) => {
   sequelize.query(`SELECT * FROM Articles WHERE id ='${req.params.id}'`,{ type: Sequelize.QueryTypes.SELECT })
     //Article.findOne({ _id: req.params.id })
     .then(
-      (article) => res.status(200).json(article))
+      (article) => res.status(200).json({article}))
     .catch(
       error => res.status(404).json({
         error
@@ -60,6 +60,6 @@ exports.getOneArticle = (req, res, next) => {
 
 exports.getAllArticle = (req, res, next) => {
  sequelize.query("SELECT * FROM Articles", { type: Sequelize.QueryTypes.SELECT })
-    .then(articles => res.status(200).json({articles}))
+    .then(articles => res.status(200).json(articles))
     .catch(error => res.status(400).json({ error }));
 };
