@@ -6,7 +6,12 @@ const articleRoutes= require('./routes/article')
 const comRoutes= require('./routes/com')
 const app = express();
 
+const { Sequelize, DataTypes } = require('sequelize');
+const sequelize = new Sequelize('groupomania', 'root', 'MdpPourLeP7!', {
+  host: 'localhost',
+  dialect: 'mysql',
 
+});
 // gérer les erreurs CROS, ajout de middleware qui s'appliquera à toute les routes
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*'); //accéder à notre api depuis n'importe quelle origine '*'

@@ -4,12 +4,7 @@ const sql = new Sequelize('groupomania', 'root', 'MdpPourLeP7!', {
   dialect: 'mysql',
 
 });
-try {
-  sql.authenticate();
-  console.log('User est Connecté a la bdd mysql')
-} catch (error) {
-  console.log('Pas connecté, error');
-}
+
 const User = require('../models/user')(sql, DataTypes);
 const bcrypt = require('bcrypt'); // crypte les mots de passe
 const jwt = require('jsonwebtoken');
@@ -19,10 +14,11 @@ exports.signup = (req, res, next) => {
   bcrypt.hash(req.body.password, 10)
     .then(hash => {
       const user = new User({
+        pseudo: req.body.pseudo,
         email: req.body.email,
         password: hash
       });
-      sql.query(`INSERT INTO User (email, password) VALUES('${user.email}','${user.password}')`)
+      sql.query(`INSERT INTO User (pseudo, email, password) VALUES('${user.pseudo}','${user.email}','${user.password}')`)
         .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
         .catch(error => res.status(400).json({ error }));
     })
@@ -32,7 +28,7 @@ exports.signup = (req, res, next) => {
 };
 exports.login = (req, res, next) => {
   User.findOne({
-    where: { email: req.body.email }
+    where: { pseudo: req.body.pseudo }
   })
     .then((user) => {
       if (!user) {
@@ -45,7 +41,11 @@ exports.login = (req, res, next) => {
             } else {
               res.status(201).json({
                 message: 'Utilisateur connecté',
-                userId: user._id,
+                userId: user.id,
+                nom : user.nom,
+                pseudo : req.body.pseudo,
+                email : user.email,
+                roles :["ROLE_USER", "ROLE_MODERATEUR"],
                 token: jwt.sign(
                   { userId: user.id },
                   '93U3hhBY_Vhchm3tr_dAjqAGDq_HDNVF33g_VKxwzn_bTPuqng_5MRaZJ5p_hPutBUCk_n7LPMAp_3K3vVGqn_hYBBpizj_6FZ4LN6_7njqjnzv_Q7tUs96_X9NgVLC_tKQhr4e_4xKj7e3f_HJKzy_BFyycxAw_zQTftN6q_TSzS4DzC_KKzvjm_NJUojn_GB4cqmu_HL_p2AS5_q_iUkJF7L_pXoqpC_UjCz4Z2_5Sdg4_FjZ9pyS_M7HiQ_9UD56jT_ggmQWSsU_bXr6C4p_tf3PsMK_jmaE3A_W7ATv_f9uSR_NRtg_mY_gQJYL_kq3_aibrS899_bsxZoJfK_v22sUDYi',
@@ -87,9 +87,8 @@ exports.getOneUser = (req, res, next) => {
     return res.status(401).send({ error });
   } else {
     sql.query(`SELECT * FROM User WHERE id ='${req.params.id}'`)
-      //Article.findOne({ _id: req.params.id })
       .then(
-        (article) => res.status(200).json(article))
+        (user) => res.status(200).json(user))
       .catch(
         error => res.status(404).json({
           error
@@ -99,6 +98,6 @@ exports.getOneUser = (req, res, next) => {
 
 exports.getAllUser = (req, res, next) => {
   sql.query("SELECT * FROM User")
-    .then(articles => res.status(200).json({articles}))
+    .then(users => res.status(200).json(users))
     .catch(error => res.status(400).json({ error }));
 };

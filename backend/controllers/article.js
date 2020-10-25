@@ -4,12 +4,7 @@ const sequelize = new Sequelize('groupomania', 'root', 'MdpPourLeP7!', {
   dialect: 'mysql',
 
 });
-try {
-  sequelize.authenticate();
-  console.log('Connecté a la bdd mysql')
-} catch (error) {
-  console.log('Pas connecté, error');
-}
+
 const Article = require('../models/article')(sequelize, DataTypes);
 
 exports.createArticle = (req, res, next) => {
