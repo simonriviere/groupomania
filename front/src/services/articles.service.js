@@ -1,33 +1,38 @@
-import http from "../http-common";
 import authHeader from './auth-header';
+import axios from "axios";
+
+const API_URL = "http://localhost:3000/api";
+
+    //"Content-type": "multipart/form-data ; boundary=something",
+ 
 
 class ArticleDataService {
   getAll() {
-    return http.get("/articles");
+    return axios.get(API_URL + "/articles");
   }
 
   get(id) {
-    return http.get(`/articles/${id}`);
+    return axios.get(API_URL + `/articles/${id}`);
   }
 
   create(data) {
-    return http.post("/articles", data, { headers: authHeader() });
-  }
+    return axios.post(API_URL +"/articles", data, { headers:authHeader()});
+      }
 
   update(id, data) {
-    return http.put(`/articles/${id}`, data);
+    return axios.put(API_URL + `/articles/${id}`, data);
   }
 
   delete(id) {
-    return http.delete(`/articles/${id}`);
+    return axios.delete(API_URL + `/articles/${id}`);
   }
 
   /* deleteAll() {
-    return http.delete(`/articles`);
+    return axios.delete(`/articles`);
   } */
 
 /*   findByTitle(title) {
-    return http.get(`/articles?title=${title}`);
+    return axios.get(`/articles?title=${title}`);
   } */
 }
 

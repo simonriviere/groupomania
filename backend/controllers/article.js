@@ -3,11 +3,12 @@ const Articles = db.articles;
 const Op = db.Sequelize.Op;
 
 exports.createArticle = (req, res, next) => {
+
   const article = {
     titre: req.body.titre,
     message: req.body.message,
     userId: req.body.userId,
-    image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+    image: `${req.protocol}://${req.get('host')}/images/${req.body.image}`,
   };
   Articles.create(article)
     .then(article => {

@@ -3,8 +3,6 @@ import ArticleDataService from "../services/articles.service";
 
 const user = JSON.parse(localStorage.getItem('user'));
 
-
-
 export default class AddArticle extends Component {
 
   constructor(props) {
@@ -51,7 +49,7 @@ export default class AddArticle extends Component {
       image: this.fileInput.current.files[0].name,
       userId: user.userId
     };
-    console.log(data.titre)
+    console.log(data)
     ArticleDataService.create(data)
         .then(response => {
           this.setState({
@@ -122,7 +120,7 @@ export default class AddArticle extends Component {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="image">image</label>
+                <label htmlFor="image">Votre gif</label>
                 <input type="file" ref={this.fileInput} name="myImage" encType="multipart/form-data" onChange={this.onChangeImage} />
               </div>
 

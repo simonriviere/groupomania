@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-
+const path =  require('path');
 const app = express();
 
 var corsOptions = {
@@ -23,9 +23,11 @@ db.sequelize.sync({ force: true }).then(() => {
   console.log("Drop and re-sync db.");
 }); */
 // simple route
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 require("./routes/article")(app); 
 require("./routes/user")(app);
+
 // set port, listen for requests
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
