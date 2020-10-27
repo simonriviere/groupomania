@@ -34,7 +34,7 @@ export default class BoardUser extends Component {
           <div className="card"  key={article.id}>
               <div className="card-body">
                 <h5 className="card-title" >{article.titre}</h5>
-                <p className="card-text">{article.image}</p>
+                <img src={`${article.image}`} className="card-text" width="500" height="450" alt="gif fournit par l'utilisateur"  ></img>
                 <p className="card-text" >{article.message}</p>
               </div>
           </div>

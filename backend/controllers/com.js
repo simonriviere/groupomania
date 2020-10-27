@@ -7,7 +7,7 @@ const sequelize = new Sequelize('groupomania', 'root', 'MdpPourLeP7!', {
 
 const Com = require('../models/com')(sequelize, DataTypes);
 exports.createCom = (req, res, next) => {
-  const createCom = req.body
+  const createCom = JSON.parse(req.body)
   // l'id est fournis automatiquement du coup on ne récupère pas celui du front
   const com = new Com({
     ...createCom,

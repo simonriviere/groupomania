@@ -8,16 +8,13 @@ export default class Profile extends Component {
 
     this.state = {
         currentUser: AuthService.getCurrentUser(),
-        profilUser : AuthService.getProfilUser()
+        
     };
   
   }
-
   render() {
     const { currentUser } = this.state;
-    const {profilUser} = this.state; 
-    console.log(currentUser)
-    console.log(JSON.stringify(profilUser))
+    
     return (
       <div className="container">
         <header className="jumbotron">

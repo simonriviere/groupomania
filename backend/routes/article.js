@@ -1,20 +1,22 @@
-const express = require('express');
-const router = express.Router();
-const stuffCtrl = require('../controllers/article');
-const auth = require ('../middleware/auth');
-
-const multer = require('../middleware/multer-config');
+module.exports = app => {
+    var router = require("express").Router();
+    const articles = require("../controllers/article.js");
 
 
-//post un article
-router.post('/',auth,  multer, stuffCtrl.createArticle)
-//modifier un article
-router.put('/:id', auth, multer, stuffCtrl.modifyArticle);
-//supprimer la route
-router.delete('/:id',auth, stuffCtrl.deleteArticle);
-//route pour un article en fonction d'orderId
-router.get('/:id',auth,  stuffCtrl.getOneArticle)
-// route pour tout les articles
-router.get('/', auth, stuffCtrl.getAllArticle);
+    const auth = require('../middleware/auth');
+    const multer = require('../middleware/multer-config');
 
-module.exports = router;
+
+    //post un article
+    router.post('/', auth, multer,articles.createArticle)
+    //modifier un article
+    router.put('/:id', auth, multer,articles.modifyArticle);
+    //supprimer la route
+    router.delete('/:id', auth,articles.deleteArticle);
+    //route pour un article en fonction d'orderId
+    router.get('/:id', auth,articles.getOneArticle)
+    // route pour tout les articles
+    router.get('/', auth, articles.findAll);
+
+   app.use('/api/articles', router)
+}
