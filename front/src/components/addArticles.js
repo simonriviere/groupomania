@@ -124,8 +124,6 @@ export default class AddArticle extends Component {
                 <input type="file" ref={this.fileInput} name="myImage" encType="multipart/form-data" onChange={this.onChangeImage} />
               </div>
 
-
-
               <button onClick={this.saveArticle} className="btn btn-success">
                 Submit
                 </button>

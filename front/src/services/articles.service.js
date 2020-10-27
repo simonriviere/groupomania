@@ -8,11 +8,11 @@ const API_URL = "http://localhost:3000/api";
 
 class ArticleDataService {
   getAll() {
-    return axios.get(API_URL + "/articles");
+    return axios.get(API_URL + "/articles", { headers:authHeader()});
   }
 
   get(id) {
-    return axios.get(API_URL + `/articles/${id}`);
+    return axios.get(API_URL + `/articles/${id}`, { headers:authHeader()});
   }
 
   create(data) {
@@ -20,11 +20,11 @@ class ArticleDataService {
       }
 
   update(id, data) {
-    return axios.put(API_URL + `/articles/${id}`, data);
+    return axios.put(API_URL + `/articles/${id}`, data, { headers:authHeader()});
   }
 
   delete(id) {
-    return axios.delete(API_URL + `/articles/${id}`);
+    return axios.delete(API_URL + `/articles/${id}`, { headers:authHeader()});
   }
 
   /* deleteAll() {

@@ -4,8 +4,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 import AuthService from "./services/auth.services";
-
-
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
@@ -13,8 +11,8 @@ import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
-import Article from "./components/addArticles";
-
+import AddArticle from "./components/addArticles";
+import EditArticle from"./components/editArticle";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -29,7 +27,7 @@ class App extends Component {
 
   componentDidMount() {
     const user = AuthService.getCurrentUser();
-    
+   
 
     if (user) {
       this.setState({
@@ -89,6 +87,7 @@ class App extends Component {
               <li className="nav-item">
                 <Link to={"/addArticle"} className="nav-link"> Ajouter un article </Link>
               </li>
+              
             )}
           </div>
 
@@ -118,6 +117,7 @@ class App extends Component {
                     Sign Up
                 </Link>
                 </li>
+
               </div>
             )}
         </nav>
@@ -129,9 +129,10 @@ class App extends Component {
             <Route exact path="/register" component={Register} />
             <Route exact path="/profile" component={Profile} />
             <Route path="/articles" component={BoardUser} />
-            <Route path="/addArticle" component={Article}/>
+            <Route path="/addArticle" component={AddArticle}/>
             <Route path="/mod" component={BoardModerator} />
             <Route path="/admin" component={BoardAdmin} />
+            <Route path="/articles/:id" component={EditArticle} />
           </Switch>
         </div>
       </div>
