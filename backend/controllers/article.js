@@ -8,7 +8,7 @@ exports.createArticle = (req, res, next) => {
     titre: req.body.titre,
     message: req.body.message,
     userId: req.body.userId,
-    image: `${req.protocol}://${req.get('host')}/images/${req.body.image}`,
+    image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
   };
   console.log(article)
   Articles.create(article)

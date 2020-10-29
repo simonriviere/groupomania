@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ArticleDataService from '../services/articles.service'
+import { Link } from 'react-router-dom'
 
 export default class EditArticle extends Component {
   constructor (props) {
@@ -148,18 +149,22 @@ export default class EditArticle extends Component {
           <div className='container text-center'>
             <div className='row '>
              <div className="col-12 text-center">
-                  <button
+                  <Link
                 onClick={this.updateArticle}
+                to={'/articles/'}
                 className=' col-3 mt-4 btn btn-success'
               >
                 Modifier
-              </button>
-              <button
-                className='col-3 mt-4 ml-4 btn btn-danger'
+              </Link>
+              
+              <Link
+                    className='col-3 mt-4 ml-4 btn btn-danger'
                 onClick={this.deleteArticle}
               >
                 Supprimer
-              </button>
+            
+              </Link>
+          
              </div>
              
             </div>

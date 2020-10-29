@@ -1,27 +1,33 @@
 import React, { Component } from 'react'
 import AuthService from '../services/auth.services'
 import ArticleDataService from '../services/articles.service'
+import CommentaireDataService from '../services/commentaire.service'
+
 import { Link } from 'react-router-dom'
+const user = AuthService.getCurrentUser()
 export default class BoardUser extends Component {
   constructor (props) {
     super(props)
-    this.retrieveArticles = this.retrieveArticles.bind(this);
-    this.deleteArticle = this.deleteArticle.bind(this);
-    this.setActiveCommentaire = this.setActiveCommentaire.bind(this);
-    this.setOffCommentaire =this.setOffCommentaire.bind(this);
+    this.retrieveArticles = this.retrieveArticles.bind(this)
+    this.setActiveCommentaire = this.setActiveCommentaire.bind(this)
+    this.setOffCommentaire = this.setOffCommentaire.bind(this)
+    this.getUserCommentaire = this.getUserCommentaire.bind(this)
+    this.saveCommentaire = this.saveCommentaire.bind(this)
+    this.onChangeCommentaire = this.onChangeCommentaire.bind(this)
 
     this.state = {
       articles: [],
       currentCommentaire: null,
       articleId: null,
-      commentaire: [],
+      viewCommentaire: [],
+      userCommentaires: [],
+      message: '',
       userId: 0
     }
   }
   componentDidMount () {
     this.retrieveArticles()
-    const user = AuthService.getCurrentUser()
-    console.log(user.userId)
+    this.getUserCommentaire()
     if (user) {
       this.setState({
         userId: user.userId
@@ -32,8 +38,8 @@ export default class BoardUser extends Component {
     ArticleDataService.getAll()
       .then(response => {
         this.setState({
-          articles: response.data,
-          currentArticles: response.data
+          articles: response.data
+          //currentArticles: response.data
         })
       })
       .catch(e => {
@@ -41,21 +47,7 @@ export default class BoardUser extends Component {
       })
   }
 
-  deleteArticle () {
-    console.log(this.state.currentArticles.id)
-    ArticleDataService.delete(this.state.currentArticles.id)
-      .then(response => {
-        console.log(response.data)
-        this.props.history.push('/articles')
-      })
-      .catch(e => {
-        console.log(e)
-      })
-  }
-
-
   setActiveCommentaire (commentaire, id) {
-    console.log(id)
     this.setState({
       currentCommentaire: commentaire,
       articleId: id
@@ -66,16 +58,51 @@ export default class BoardUser extends Component {
       currentCommentaire: null
     })
   }
+  getUserCommentaire () {
+    console.log('ol')
+    CommentaireDataService.getAll()
+      .then(response => {
+        this.setState({
+          userCommentaires: response.data
+        })
+      })
+      .catch(e => {
+        console.log(e)
+      })
+  }
+  onChangeCommentaire (e) {
+    this.setState({
+      message: e.target.value
+    })
+  }
+  saveCommentaire () {
+    let data = {
+      message: this.state.message,
+      userId: user.userId,
+      articleId: this.state.articleId
+    }
+    console.log(data)
+    CommentaireDataService.create(data)
+      .then(response => {
+        this.setState({
+          message: response.data.message
+        })
+      })
+      .catch(e => {
+        console.log(e)
+      })
+  }
 
-  
   render () {
     const {
       articles,
       userId,
-      commentaire,
+      viewCommentaire,
+      userCommentaires,
       currentCommentaire,
       articleId
     } = this.state
+    console.log(userCommentaires.length)
     return (
       <div>
         <div className='container'>
@@ -107,36 +134,69 @@ export default class BoardUser extends Component {
 
                     {currentCommentaire && articleId === article.id ? (
                       <button
-                        onClick={() => this.setOffCommentaire(commentaire)}
+                        onClick={() => this.setOffCommentaire(viewCommentaire)}
                         className='ml-5 btn btn-primary col-3 '
                       >
-                        commentaire {article.id}
+                        Masquer les commentaires
                       </button>
                     ) : (
                       <button
                         onClick={() =>
-                          this.setActiveCommentaire(commentaire, article.id)
+                          this.setActiveCommentaire(viewCommentaire, article.id)
                         }
                         className='ml-5 btn btn-primary col-3 '
                       >
-                        commentaire {article.id}
+                        Voir les {userCommentaires.length} commentaires
                       </button>
                     )}
 
                     <div>
-                      {currentCommentaire && articleId === article.id ? (
-                        <h3>
-                          Voila un commentaire de l'article : {article.id}
-                        </h3>
-                      ) : (
-                        <div></div>
-                      )}
+                      {userCommentaires &&
+                        userCommentaires.map(commentaire => (
+                          <div>
+                            {currentCommentaire &&
+                            articleId === commentaire.articleId &&
+                            articleId === article.id ? (
+                              <div>
+                                <div>
+                                  <p>
+                                    Pseudo : {commentaire.userId} Message :{' '}
+                                    {commentaire.message}
+                                  </p>
+                                </div>
+                              </div>
+                            ) : (
+                              <div></div>
+                            )}
+                          </div>
+                        ))}
                     </div>
+                    {currentCommentaire && articleId === article.id ? (
+                      <div className='form-group'>
+                        <label htmlFor='Commentaire'>Un petit mot ? </label>
+                        <input
+                          type='text'
+                          className='form-control'
+                          id='commentaire'
+                          required
+                          value={this.state.commentaire}
+                          onChange={this.onChangeCommentaire}
+                          name='commentaire'
+                        />
+                        <button
+                          onClick={this.saveCommentaire}
+                          className='btn btn-success'
+                        >
+                          Poster
+                        </button>
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
                   </div>
                 </div>
               </>
             ))}
-          <div className='container'></div>
         </div>
       </div>
     )

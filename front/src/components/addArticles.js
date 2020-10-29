@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ArticleDataService from "../services/articles.service";
+import { Link } from "react-router-dom";
 
 const user = JSON.parse(localStorage.getItem('user'));
 
@@ -16,6 +17,8 @@ export default class AddArticle extends Component {
       message: "",
       image: "",
       userId: "",
+      filename:"",
+
       submitted: false
     };
 
@@ -38,15 +41,14 @@ export default class AddArticle extends Component {
   }
   onChangeImage(e) {
     this.setState({
-      image: e.target.value
+      filename :this.fileInput.current.files[0].name 
     });
   }
-
   saveArticle() {
     var data = {
       titre: this.state.titre,
       message: this.state.message,
-      image: this.fileInput.current.files[0].name,
+      image:  this.fileInput.current.files[0].name,
       userId: user.userId
     };
     console.log(data)
@@ -79,19 +81,12 @@ export default class AddArticle extends Component {
   }
 
   render() {
+    console.log(this.onChangeImage)
     return (
 
       <div className="submit-form">
 
-        {this.state.submitted ? (
-          <div>
-            <h4>You submitted successfully!</h4>
-            <button className="btn btn-success" onClick={this.newTutorial}>
-              Add
-                </button>
-          </div>
-        ) : (
-            <div>
+               <div>
               <div className="form-group">
                 <label htmlFor="titre">Titre</label>
                 <input
@@ -122,19 +117,17 @@ export default class AddArticle extends Component {
               <div className="form-group">
               <label htmlFor="image">Votre gif</label>
                     <input 
-                        type="file" 
+                        type="File" 
                         ref={this.fileInput} 
                         name="myImage" 
-                        encType="multipart/form-data" 
-                        filename="filename"
                         onChange={this.onChangeImage} />
               </div>
 
-              <button onClick={this.saveArticle} className="btn btn-success">
+              <Link to={"/articles/"} onClick={this.saveArticle} className="btn btn-success">
                 Submit
-                </button>
+                </Link>
             </div>
-          )}
+    
       </div>
     );
   }
