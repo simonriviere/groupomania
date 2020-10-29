@@ -13,6 +13,7 @@ import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
 import AddArticle from "./components/addArticles";
 import EditArticle from"./components/editArticle";
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -51,6 +52,7 @@ class App extends Component {
           <Link to={"/articles"} className="navbar-brand">
             Groupomania
           </Link>
+
           <div className="navbar-nav mr-auto">
             {!currentUser && (
             <li className="nav-item">
@@ -117,7 +119,6 @@ class App extends Component {
                     Sign Up
                 </Link>
                 </li>
-
               </div>
             )}
         </nav>
@@ -126,13 +127,14 @@ class App extends Component {
           <Switch>
             <Route exact path={["/", "/home"]} component={Home} />
             <Route exact path="/login" component={Login} />
+            <Route path="/admin" component={BoardAdmin} />
+            <Route path="/mod" component={BoardModerator} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/profile" component={Profile} />
-            <Route path="/articles" component={BoardUser} />
-            <Route path="/addArticle" component={AddArticle}/>
-            <Route path="/mod" component={BoardModerator} />
-            <Route path="/admin" component={BoardAdmin} />
-            <Route path="/articles/:id" component={EditArticle} />
+            <Route exact path="/articles" component={BoardUser} />
+            <Route exact path="/addArticle" component={AddArticle}/>
+            <Route exact path="/articles/:id" component={EditArticle} />
+  
           </Switch>
         </div>
       </div>
@@ -141,55 +143,4 @@ class App extends Component {
 }
 
 export default App;
-
-/* import React, { Component } from "react";
-import { Switch, Route, Link } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./App.css";
-
-import Article from "./components/articles";
-import Signup from "./components/signup";
-import Login from "./components/login";
-
-class App extends Component {
-  render() {
-    return (
-      <div>
-        <nav className="navbar navbar-expand navbar-dark bg-dark">
-          <a href="/Article" className="navbar-brand">
-            groupomania
-          </a>
-          <div className="navbar-nav mr-auto">
-            <li className="nav-item">
-              <Link to={"/Article"} className="nav-link">
-                Articles
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to={"/Signup"} className="nav-link">
-                S'enregister
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to={"/Login"} className="nav-link">
-                Se connecter
-              </Link>
-            </li>
-          </div>
-        </nav>
-
-        <div className="container mt-3">
-          <Switch>
-            <Route exact path={["/", "/Article"]} component={Article} />
-            <Route exact path="/Signup" component={Signup} />
-            <Route exact path="/login" component={Login}/>
-
-          </Switch>
-        </div>
-      </div>
-    );
-  }
-}
-
-export default App; */
 

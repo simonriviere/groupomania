@@ -7,6 +7,7 @@ export default function authHeader() {
       return {
          'authorization': 'token '+ user.token,
          'Content-Type' : 'multipart/form-data ; boundary=something', };
+         
     } else {
       return {};
     }

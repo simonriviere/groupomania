@@ -2,6 +2,7 @@ const db = require("../models/");
 const Articles = db.articles;
 const Op = db.Sequelize.Op;
 
+
 exports.createArticle = (req, res, next) => {
   const article = {
     titre: req.body.titre,

@@ -1,16 +1,14 @@
-const express = require('express');
-const router = express.Router();
-const stuffCtrl = require('../../controllers/Com');
-const auth = require ('../middleware/auth');
 
-const multer = require('../middleware/multer-config');
+module.exports = app => {
+    const comCtrl = require('../controllers/com'); 
+    var router = require("express").Router();
+    const auth = require('../middleware/auth');
 
+    router.post('/', auth, comCtrl.createCom);
+    router.put('/:id', auth, comCtrl.modifyCom);
+    router.delete('/:id',auth, comCtrl.deleteCom);
+    router.get('/:id',auth,  comCtrl.getOneCom)
+    router.get('/', auth, comCtrl.getAllCom);
 
-
-router.post('/',auth,  multer, stuffCtrl.createCom)
-router.put('/:id', auth, multer, stuffCtrl.modifyCom);
-router.delete('/:id',auth, stuffCtrl.deleteCom);
-router.get('/:id',auth,  stuffCtrl.getOneCom);
-router.get('/', auth, stuffCtrl.getAllCom);
-
-module.exports = router;
+   app.use('/api/com', router)
+}

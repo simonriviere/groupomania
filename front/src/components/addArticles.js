@@ -120,8 +120,14 @@ export default class AddArticle extends Component {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="image">Votre gif</label>
-                <input type="file" ref={this.fileInput} name="myImage" encType="multipart/form-data" onChange={this.onChangeImage} />
+              <label htmlFor="image">Votre gif</label>
+                    <input 
+                        type="file" 
+                        ref={this.fileInput} 
+                        name="myImage" 
+                        encType="multipart/form-data" 
+                        filename="filename"
+                        onChange={this.onChangeImage} />
               </div>
 
               <button onClick={this.saveArticle} className="btn btn-success">

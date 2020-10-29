@@ -1,55 +1,97 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = new Sequelize('groupomania', 'root', 'MdpPourLeP7!', {
-  host: 'localhost',
-  dialect: 'mysql',
+const db = require("../models/");
+const Commentaires = db.commentaires;
+const Op = db.Sequelize.Op;
 
-});
 
-const Com = require('../models/com')(sequelize, DataTypes);
 exports.createCom = (req, res, next) => {
-  const createCom = JSON.parse(req.body)
-  // l'id est fournis automatiquement du coup on ne récupère pas celui du front
-  const com = new Com({
-    ...createCom,
-    //image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-  })
-  sequelize.query(`INSERT INTO Commentaire (message, articleId, userId) VALUES('${com.message}','${com.articleId}','${com.userId}') `)
-    .then(() => res.status(201).json({ message: 'Commentaire enregistré !' }))
-    .catch(error => res.status(400).json({ error }));
+  const commentaire = {
+    message: req.body.message,
+    articleId : req.body.articleId,
+    userId: req.body.userId,
+  };
+  console.log(commentaire)
+  Commentaires.create(commentaire)
+    .then(commentaire => {
+      res.send(commentaire);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while creating the Tutorial."
+      });
+    });
 };
+
 exports.modifyCom = (req, res, next) => {
-  if (req.body.userId == null) {
-    return res.status(401).send({ error});
-  } else {
-    const com = req.body
-    sequelize.query(`UPDATE Commentaire SET message='${com.message}',articleId='${com.articleId}', userId='${com.userId}' WHERE id= '${req.params.id}'`)
-      .then(() => res.status(200).json({ message: 'Commentaire modifié !' }))
-      .catch(error => res.status(400).json({ error }));
-  }
+  const id = req.params.id;
+
+  Commentaires.update(req.body, {
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Commentaires was updated successfully."
+        });
+      } else {
+        res.send({
+          message: `Cannot update Commentaires with id=${id}. Maybe Commentaires was not found or req.body is empty!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating Commentaires with id=" + id
+      });
+    });
 };
+
 exports.deleteCom = (req, res, next) => {
-  if (req.body.userId == null) {
-    return res.status(401).send({ error });
-  } else {
-    sequelize.query(`DELETE FROM Commentaire WHERE id ='${req.params.id}' `)
-      .then(() => res.status(200).json({ message: 'Objet supprimé !' }))
-      .catch(error => res.status(400).json({ error }));
-  }
+  const id = req.params.id;
 
+  Commentaires.destroy({
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Commentaire was deleted successfully!"
+        });
+      } else {
+        res.send({
+          message: `Cannot delete Commentaire with id=${id}. Maybe Commentaire was not found!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Could not delete Commentaire with id=" + id
+      });
+    });
 };
+
 exports.getOneCom = (req, res, next) => {
-
-  sequelize.query(`SELECT * FROM Commentaire WHERE id ='${req.params.id}'`)
-    //Article.findOne({ _id: req.params.id })
-    .then(
-      (com) => res.status(200).json(com))
-    .catch(
-      error => res.status(404).json({
-        error
-      }));
+ const id = req.params.id;
+Commentaires.findByPk(id)
+ .then(data => {
+   res.send(data);
+ })
+ .catch(err => {
+   res.status(500).send({
+     message: "Error retrieving Tutorial with id=" + id
+   });
+ });
 }
+
 exports.getAllCom = (req, res, next) => {
-  sequelize.query("SELECT Commentaire.message,Commentaire.likeArticle,Commentaire.dislikeArticle,Commentaire.articleId FROM `Articles`, `Commentaire` WHERE Articles.id = Commentaire.articleId;")
-    .then(coms => res.status(200).json(coms))
-    .catch(error => res.status(400).json({ error }));
-};
+  Commentaires.findAll()
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials."
+      });
+    });
+}; 

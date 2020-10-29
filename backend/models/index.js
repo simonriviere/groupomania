@@ -21,4 +21,5 @@ db.sequelize = sequelize;
 
 db.articles = require("./article.js")(sequelize, Sequelize);
 db.user = require("./user.js")(sequelize, Sequelize)
+db.commentaires = require('./commentaire.js')(sequelize,Sequelize)
 module.exports = db;
