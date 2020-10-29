@@ -14,6 +14,8 @@ export default class BoardUser extends Component {
     this.getUserCommentaire = this.getUserCommentaire.bind(this)
     this.saveCommentaire = this.saveCommentaire.bind(this)
     this.onChangeCommentaire = this.onChangeCommentaire.bind(this)
+    this.deleteCommentaire = this.deleteCommentaire.bind(this)
+    this.getCommentaire = this.getCommentaire.bind(this)
 
     this.state = {
       articles: [],
@@ -59,7 +61,6 @@ export default class BoardUser extends Component {
     })
   }
   getUserCommentaire () {
-    console.log('ol')
     CommentaireDataService.getAll()
       .then(response => {
         this.setState({
@@ -85,14 +86,40 @@ export default class BoardUser extends Component {
     CommentaireDataService.create(data)
       .then(response => {
         this.setState({
-          message: response.data.message
+          id: response.data.id,
+          message: response.data.message,
+          articlId: response.data.articleId,
+          userId: response.data.userId
+
+        })
+        console.log(response.data)
+      })
+      .catch(e => {
+        console.log(e)
+      })
+  }
+  getCommentaire (id) {
+    CommentaireDataService.get(id)
+      .then(response => {
+        console.log(response.data)
+        this.setState({
+          userCommentaires: response.data
         })
       })
       .catch(e => {
         console.log(e)
       })
   }
-
+  deleteCommentaire () {
+    CommentaireDataService.delete(this.state.userCommentaires.id)
+      .then(response => {
+        console.log(response.data)
+        this.props.history.push('/commentaires')
+      })
+      .catch(e => {
+        console.log(e)
+      })
+  }
   render () {
     const {
       articles,
@@ -102,7 +129,7 @@ export default class BoardUser extends Component {
       currentCommentaire,
       articleId
     } = this.state
-    console.log(userCommentaires.length)
+    console.log(userCommentaires)
     return (
       <div>
         <div className='container'>
@@ -127,7 +154,7 @@ export default class BoardUser extends Component {
                           to={'/articles/' + article.id}
                           className='btn btn-primary col-3'
                         >
-                          Modifier {article.id}
+                          Modifier l'article
                         </Link>
                       </>
                     )}
@@ -146,7 +173,7 @@ export default class BoardUser extends Component {
                         }
                         className='ml-5 btn btn-primary col-3 '
                       >
-                        Voir les {userCommentaires.length} commentaires
+                        Commentaire
                       </button>
                     )}
 
@@ -159,9 +186,21 @@ export default class BoardUser extends Component {
                             articleId === article.id ? (
                               <div>
                                 <div>
+                            <h5> Commentaire de {commentaire.userId} : </h5>
                                   <p>
-                                    Pseudo : {commentaire.userId} Message :{' '}
                                     {commentaire.message}
+                                    <br />
+
+                                    {userId === commentaire.userId ? (
+                                      <Link
+                                        to={'/commentaire/' + commentaire.id}
+                                        className='badge badge-primary col-1'
+                                      >
+                                        Modifier {commentaire.id}
+                                      </Link>
+                                    ) : (
+                                      <div></div>
+                                    )}
                                   </p>
                                 </div>
                               </div>
@@ -183,9 +222,10 @@ export default class BoardUser extends Component {
                           onChange={this.onChangeCommentaire}
                           name='commentaire'
                         />
+
                         <button
                           onClick={this.saveCommentaire}
-                          className='btn btn-success'
+                          className='btn btn-success mt-3'
                         >
                           Poster
                         </button>

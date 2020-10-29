@@ -1,20 +1,34 @@
 //Affiche le profil en fonction du jeton
 import React, { Component } from "react";
 import AuthService from "../services/auth.services";
-
+import UserService from "../services/user.service"
 export default class Profile extends Component {
   constructor(props) {
     super(props);
+    this.getUser = this.getUser.bind(this)
 
     this.state = {
-        currentUser: AuthService.getCurrentUser(),
-        
+      currentUser: AuthService.getCurrentUser(),
+      userCo : [],
     };
-  
   }
+  getUser(id) {
+    UserService.get(id)
+      .then(response => {
+        this.setState({
+          userCo: response.data
+        })
+        console.log(response.data)
+      })
+      .catch(e => {
+        console.log(e)
+      })
+  }
+
   render() {
     const { currentUser } = this.state;
-    
+    const { userCo } = this.state
+    console.log(userCo)
     return (
       <div className="container">
         <header className="jumbotron">
@@ -33,7 +47,7 @@ export default class Profile extends Component {
         </p>
         <p>
           <strong>Nom : </strong>{" "}
-          {currentUser.nom}
+          {userCo.id}
         </p>
         <p>
           <strong>Email:</strong>{" "}

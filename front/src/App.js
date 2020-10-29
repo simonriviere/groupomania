@@ -13,7 +13,7 @@ import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
 import AddArticle from "./components/addArticles";
 import EditArticle from"./components/editArticle";
-
+import EditCom from"./components/editCom";;
 class App extends Component {
   constructor(props) {
     super(props);
@@ -134,7 +134,7 @@ class App extends Component {
             <Route exact path="/articles" component={BoardUser} />
             <Route exact path="/addArticle" component={AddArticle}/>
             <Route exact path="/articles/:id" component={EditArticle} />
-  
+            <Route exact path="/commentaire/:id" component={EditCom} />
           </Switch>
         </div>
       </div>

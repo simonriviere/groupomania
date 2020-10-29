@@ -17,7 +17,6 @@ export default class AddArticle extends Component {
       message: "",
       image: "",
       userId: "",
-      filename:"",
 
       submitted: false
     };
@@ -41,7 +40,7 @@ export default class AddArticle extends Component {
   }
   onChangeImage(e) {
     this.setState({
-      filename :this.fileInput.current.files[0].name 
+      image : this.fileInput.current.files[0].name 
     });
   }
   saveArticle() {
@@ -81,7 +80,7 @@ export default class AddArticle extends Component {
   }
 
   render() {
-    console.log(this.onChangeImage)
+  
     return (
 
       <div className="submit-form">
