@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import ArticleDataService from '../services/articles.service'
-import { Link } from 'react-router-dom'
-import axios, { put } from 'axios';
+import  { put } from 'axios'
+
 
 export default class EditArticle extends Component {
   constructor (props) {
     super(props)
-    this.fileInput = React.createRef();
+    this.fileInput = React.createRef()
 
     this.state = {
       currentArticles: {
@@ -25,8 +25,7 @@ export default class EditArticle extends Component {
     this.getArticle = this.getArticle.bind(this)
     this.updateArticle = this.updateArticle.bind(this)
     this.deleteArticle = this.deleteArticle.bind(this)
-    this.onFormSubmit = this.onFormSubmit.bind(this);
-
+    this.onFormSubmit = this.onFormSubmit.bind(this)
   }
 
   componentDidMount () {
@@ -56,15 +55,15 @@ export default class EditArticle extends Component {
       }
     })
   }
-  onFormSubmit(e) {
+  onFormSubmit (e) {
     e.preventDefault() // Stop form submit
-    this.updateArticle(this.state.file).then((response) => {
-      console.log(response.data);
+    this.updateArticle(this.state.file).then(response => {
+      console.log(response.data)
     })
   }
-  onChange(e) {
-    this.setState( {
-      file : e.target.files[0].name
+  onChange (e) {
+    this.setState({
+      file: e.target.files[0].name
     })
   }
   getArticle (id) {
@@ -80,23 +79,25 @@ export default class EditArticle extends Component {
       })
   }
 
-  updateArticle() {
+  updateArticle () {
     const url = `http://localhost:3000/api/articles/${this.state.currentArticles.id}`
-    const user = JSON.parse(localStorage.getItem('user'));
-    this.setState({submitted : true});
-    const formData = new FormData();
+    const user = JSON.parse(localStorage.getItem('user'))
+    this.setState({ submitted: true })
+    const formData = new FormData()
     formData.append('titre', this.state.currentArticles.titre)
     formData.append('message', this.state.currentArticles.message)
     formData.append('userId', user.userId)
     formData.append('image', this.fileInput.current.files[0])
     const config = {
-      
       headers: {
-        'authorization': 'token '+ user.token,
-          'content-type': 'multipart/form-data'
+        authorization: 'token ' + user.token,
+        'content-type': 'multipart/form-data'
       }
     }
-    return  put(url, formData,config)
+    return put(url, formData, config).then(() => {
+      this.props.history.push('/articles')
+      window.location.reload()
+    })
   }
 
   deleteArticle () {
@@ -112,11 +113,9 @@ export default class EditArticle extends Component {
   }
 
   render () {
-    
     const { currentArticles } = this.state
-    console.log( this.state.currentArticles)
     return (
-      <form onSubmit={this.onFormSubmit}  className='container submit-form '>
+      <form onSubmit={this.onFormSubmit} className='container submit-form '>
         <div>
           <div className='form-group '>
             <label htmlFor='titre'>Titre</label>
@@ -144,39 +143,28 @@ export default class EditArticle extends Component {
             />
           </div>
           <div className='form-group col-6 '>
-          <input
+            <input
               type='file'
               ref={this.fileInput}
               name='myImage'
               onChange={this.onChange}
             />
-          </div>    
-           <button className="btn btn-primary" type="submit">Télécharger</button>
+          </div>
+
           <div className='container text-center'>
-
             <div className='row '>
-            <div className="col-12 text-center">
-                  <Link
-                onClick={this.updateArticle}
-                to={'/articles/'}
-                className=' col-3 mt-4 btn btn-success'
-                type="submit"
-              >
-                Modifier
-              </Link>
-         
+              <div className='col-12 text-center'>
+                <button className='col-3 mt-4 btn btn-success' type='submit'>
+                  Modifier
+                </button>
 
-              <button
-
-                className='col-3 mt-4 ml-4 btn btn-danger'
-                onClick={this.deleteArticle}
-              >
-                Supprimer
-            
-              </button>
-          
-             </div>
-             
+                <button
+                  className='col-3 mt-4 ml-4 btn btn-danger'
+                  onClick={this.deleteArticle}
+                >
+                  Supprimer
+                </button>
+              </div>
             </div>
           </div>
         </div>

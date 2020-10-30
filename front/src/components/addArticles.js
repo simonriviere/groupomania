@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import axios, { post } from 'axios';
+import  { post } from 'axios';
 
 export default class AddArticle extends Component {
 
