@@ -6,7 +6,7 @@ export default function authHeader() {
       // for Node.js Express back-end
       return {
          'authorization': 'token '+ user.token,
-         
+         'content-type': 'multipart/form-data',
          'body' : 'data', };
          
     } else {

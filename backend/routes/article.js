@@ -1,14 +1,15 @@
+const multer = require('../middleware/multer-config');
 module.exports = app => {
     var router = require("express").Router();
     const articles = require("../controllers/article.js");
 
 
     const auth = require('../middleware/auth');
-    const multer = require('../middleware/multer-config');
+    
 
 
     //post un article
-    router.post('/', auth, multer,articles.createArticle)
+    router.post('/', auth, multer, articles.createArticle)
     //modifier un article
     router.put('/:id', auth, multer,articles.modifyArticle);
     //supprimer la route

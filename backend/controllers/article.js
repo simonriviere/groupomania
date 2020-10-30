@@ -10,7 +10,6 @@ exports.createArticle = (req, res, next) => {
     userId: req.body.userId,
     image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
   };
-  console.log(article)
   Articles.create(article)
     .then(article => {
       res.send(article);
@@ -26,8 +25,16 @@ exports.createArticle = (req, res, next) => {
 
 exports.modifyArticle = (req, res, next) => {
   const id = req.params.id;
-
-  Articles.update(req.body, {
+  console.log(req.file)
+  const modification = req.file ? {
+    titre: req.body.titre,
+    message: req.body.message,
+    userId: req.body.userId,
+    image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+  } : {    titre: req.body.titre,
+    message: req.body.message,
+    userId: req.body.userId,}
+  Articles.update(modification, {
     where: { id: id }
   })
     .then(num => {

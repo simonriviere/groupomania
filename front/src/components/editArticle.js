@@ -1,27 +1,32 @@
 import React, { Component } from 'react'
 import ArticleDataService from '../services/articles.service'
 import { Link } from 'react-router-dom'
+import axios, { put } from 'axios';
 
 export default class EditArticle extends Component {
   constructor (props) {
     super(props)
-    this.onChangeTitle = this.onChangeTitle.bind(this)
-    this.onChangeMessage = this.onChangeMessage.bind(this)
-    this.onChangeImage = this.onChangeImage.bind(this)
-    this.getArticle = this.getArticle.bind(this)
-    this.updateArticle = this.updateArticle.bind(this)
-    this.deleteArticle = this.deleteArticle.bind(this)
+    this.fileInput = React.createRef();
 
     this.state = {
       currentArticles: {
         id: null,
         titre: '',
         message: '',
-        image: '',
+        image: null,
         userId: '',
         submitted: false
       }
     }
+
+    this.onChangeTitle = this.onChangeTitle.bind(this)
+    this.onChangeMessage = this.onChangeMessage.bind(this)
+    this.onChange = this.onChange.bind(this)
+    this.getArticle = this.getArticle.bind(this)
+    this.updateArticle = this.updateArticle.bind(this)
+    this.deleteArticle = this.deleteArticle.bind(this)
+    this.onFormSubmit = this.onFormSubmit.bind(this);
+
   }
 
   componentDidMount () {
@@ -51,19 +56,17 @@ export default class EditArticle extends Component {
       }
     })
   }
-  onChangeImage (e) {
-    const image = e.target.value
-
-    this.setState(function (prevState) {
-      return {
-        currentArticles: {
-          ...prevState.currentArticles,
-          image: image
-        }
-      }
+  onFormSubmit(e) {
+    e.preventDefault() // Stop form submit
+    this.updateArticle(this.state.file).then((response) => {
+      console.log(response.data);
     })
   }
-
+  onChange(e) {
+    this.setState( {
+      file : e.target.files[0].name
+    })
+  }
   getArticle (id) {
     ArticleDataService.get(id)
       .then(response => {
@@ -77,20 +80,23 @@ export default class EditArticle extends Component {
       })
   }
 
-  updateArticle () {
-    ArticleDataService.update(
-      this.state.currentArticles.id,
-      this.state.currentArticles
-    )
-      .then(response => {
-        console.log(response.data)
-        this.setState({
-          message: 'The Article was updated successfully!'
-        })
-      })
-      .catch(e => {
-        console.log(e)
-      })
+  updateArticle() {
+    const url = `http://localhost:3000/api/articles/${this.state.currentArticles.id}`
+    const user = JSON.parse(localStorage.getItem('user'));
+    this.setState({submitted : true});
+    const formData = new FormData();
+    formData.append('titre', this.state.currentArticles.titre)
+    formData.append('message', this.state.currentArticles.message)
+    formData.append('userId', user.userId)
+    formData.append('image', this.fileInput.current.files[0])
+    const config = {
+      
+      headers: {
+        'authorization': 'token '+ user.token,
+          'content-type': 'multipart/form-data'
+      }
+    }
+    return  put(url, formData,config)
   }
 
   deleteArticle () {
@@ -106,10 +112,11 @@ export default class EditArticle extends Component {
   }
 
   render () {
+    
     const { currentArticles } = this.state
-
+    console.log( this.state.currentArticles)
     return (
-      <div className='container submit-form '>
+      <form onSubmit={this.onFormSubmit}  className='container submit-form '>
         <div>
           <div className='form-group '>
             <label htmlFor='titre'>Titre</label>
@@ -137,40 +144,43 @@ export default class EditArticle extends Component {
             />
           </div>
           <div className='form-group col-6 '>
-            <label htmlFor='image'>Votre gif</label>
-            <input
+          <input
               type='file'
               ref={this.fileInput}
               name='myImage'
-              encType='multipart/form-data'
-              onChange={this.onChangeImage}
+              onChange={this.onChange}
             />
-          </div>
+          </div>    
+           <button className="btn btn-primary" type="submit">Télécharger</button>
           <div className='container text-center'>
+
             <div className='row '>
-             <div className="col-12 text-center">
+            <div className="col-12 text-center">
                   <Link
                 onClick={this.updateArticle}
                 to={'/articles/'}
                 className=' col-3 mt-4 btn btn-success'
+                type="submit"
               >
                 Modifier
               </Link>
-              
-              <Link
-                    className='col-3 mt-4 ml-4 btn btn-danger'
+         
+
+              <button
+
+                className='col-3 mt-4 ml-4 btn btn-danger'
                 onClick={this.deleteArticle}
               >
                 Supprimer
             
-              </Link>
+              </button>
           
              </div>
              
             </div>
           </div>
         </div>
-      </div>
+      </form>
     )
   }
 }

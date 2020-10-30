@@ -129,14 +129,14 @@ export default class BoardUser extends Component {
       currentCommentaire,
       articleId
     } = this.state
-    console.log(userCommentaires)
+
     return (
       <div>
         <div className='container'>
           {articles &&
             articles.map(article => (
               <>
-                <div className='card text-center' key={article.id}>
+                <div className='card text-center' key={articleId}>
                   <div className='card-body'>
                     <h5 className='card-title'>{article.titre}</h5>
                     <img

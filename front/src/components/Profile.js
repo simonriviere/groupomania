@@ -24,7 +24,7 @@ export default class Profile extends Component {
         console.log(e)
       })
   }
-
+  
   render() {
     const { currentUser } = this.state;
     const { userCo } = this.state
@@ -47,7 +47,7 @@ export default class Profile extends Component {
         </p>
         <p>
           <strong>Nom : </strong>{" "}
-          {userCo.id}
+          {userCo}
         </p>
         <p>
           <strong>Email:</strong>{" "}
