@@ -72,7 +72,6 @@ export default class EditArticle extends Component {
         this.setState({
           currentArticles: response.data
         })
-        console.log(response.data)
       })
       .catch(e => {
         console.log(e)
@@ -113,7 +112,7 @@ export default class EditArticle extends Component {
 
   render () {
     const { currentArticles } = this.state
-    console.log(currentArticles)
+
     return (
       <>
         <div className='container'>

@@ -29,7 +29,6 @@ export default class Login extends Component {
       message: ""
     };
   }
-
   onChangePseudo(e) {
     this.setState({
       pseudo: e.target.value
@@ -51,7 +50,7 @@ export default class Login extends Component {
     });
 
     this.form.validateAll();
-
+    
     if (this.checkBtn.context._errors.length === 0) {
       AuthService.login(this.state.pseudo, this.state.password).then(
         () => {

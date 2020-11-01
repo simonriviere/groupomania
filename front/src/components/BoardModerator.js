@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import CommentaireDataService from '../services/commentaire.service'
-import AuthService from '../services/auth.services'
 import { Link } from 'react-router-dom'
 
-const user = AuthService.getCurrentUser()
 
 export default class BoardUser extends Component {
   constructor(props) {

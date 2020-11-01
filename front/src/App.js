@@ -6,7 +6,8 @@ import {
   Navbar,
   Nav,
 } from 'react-bootstrap'
-
+import UserService from './services/user.service'
+import logo from'./logo/icon-left-font-monochrome-black.svg'
 import AuthService from './services/auth.services'
 import Login from './components/Login'
 import Register from './components/Register'
@@ -24,42 +25,54 @@ class App extends Component {
   constructor (props) {
     super(props)
     this.logOut = this.logOut.bind(this)
+    this.getUser = this.getUser.bind(this)
 
     this.state = {
       showModeratorBoard: false,
-      showAdminBoard: false,
       currentUser: undefined,
-      userCo: []
+      getCurrentUser : AuthService.getCurrentUser(),
+      userCo: [],
+      test : [],
     }
   }
-
   componentDidMount () {
-    const user = AuthService.getCurrentUser()
-    if (user) {
-      this.setState({
-        currentUser: user,
-        showModeratorBoard: user.roles.includes('ROLE_MODERATEUR'),
-        showAdminBoard: user.roles.includes('ROLE_ADMIN')
-      })
-    }
+    this.getUser()
   }
+  getUser (id) {
+    const { getCurrentUser } = this.state
+     if(getCurrentUser != null){
+       UserService.getUser(getCurrentUser.userId)
+      .then(response => {
+        this.setState({
+          userCo: response.data
+        })
+        if (response.data) {
+          this.setState({
+           currentUser: this.state.userCo,
+           showModeratorBoard: this.state.userCo.role.includes('MODO'),
+          })
+        }
+      })
+      .catch(e => {
+        console.log(e)
+      })
+     }
+    }
 
   logOut () {
-    
     AuthService.logout()
- 
- 
   }
 
   render () {
-    const { currentUser, showModeratorBoard, showAdminBoard } = this.state
-
+    const { currentUser, showModeratorBoard, showAdminBoard} = this.state
+    const token = localStorage.getItem('user')
+    console.log(token)
     return (
       <>
         <Navbar bg='light' expand='lg'>
           <Navbar.Brand href='' >
             <Link to={'/articles'} className='navbar-brand'>
-              Groupomania
+             <img src={logo} alt="Logo groupomania" ></img>
             </Link>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls='basic-navbar-nav '  />
@@ -73,7 +86,7 @@ class App extends Component {
              
             )}
 
-            {showModeratorBoard && (
+            {showModeratorBoard && token && (
               
                 <Link to={'/mod'} className='nav-link'>
                   Modération des commentaires
@@ -81,7 +94,7 @@ class App extends Component {
              
             )}
 
-            {showAdminBoard && (
+            {showAdminBoard && token && (
              
                 <Link to={'/admin'} className='nav-link'>
                   Admin Board
@@ -89,7 +102,7 @@ class App extends Component {
              
             )}
 
-            {currentUser && (
+            {currentUser && token && (
          
         
               <Link to={'/articles'} className='nav-link'>
@@ -97,7 +110,7 @@ class App extends Component {
               </Link>
            
             )}
-            {currentUser && (
+            {currentUser && token && (
              
                 <Link to={'/addArticle'} className='nav-link'>
                   {' '}
@@ -106,7 +119,7 @@ class App extends Component {
              
             )}
 
-            {currentUser ? (
+            {currentUser && token ? (
               <div className='navbar-nav ml-auto'>
                 
                   <Link to={'/profile'} className='nav-link'>
@@ -114,7 +127,7 @@ class App extends Component {
                   </Link>
                 
                
-                  <Link to={'/home'} className='nav-link' onClick={this.logOut}>
+                  <Link to={'/login'} className='nav-link' onClick={this.logOut}>
                     LogOut
                   </Link>
                

@@ -53,7 +53,6 @@ export default class Profile extends Component {
   }
   render () {
     const {  userCo } = this.state
-    
     return (
       <div>
         <div className='container'>
@@ -65,7 +64,7 @@ export default class Profile extends Component {
                   className='card-text'
                   width='200'
                   height='200'
-                  alt="Photo de profile de l'utilisateur "
+                  alt="utilisateur "
                 ></img>
                 <p>
                   <strong>Pseudo : </strong> {userCo.pseudo}

@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "variable_overrides.scss"
+    ],
+    "names": [],
+    "file": "variable_overrides.css"
+}

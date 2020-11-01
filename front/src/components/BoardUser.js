@@ -66,7 +66,6 @@ export default class BoardUser extends Component {
         this.setState({
           userCommentaires: response.data
         })
-        console.log(response.data)
       })
       .catch(e => {
         console.log(e)
@@ -83,7 +82,6 @@ export default class BoardUser extends Component {
       userId: user.userId,
       articleId: this.state.articleId
     }
-    console.log(data)
     CommentaireDataService.create(data)
       .then(response => {
         this.setState(({

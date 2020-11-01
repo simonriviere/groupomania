@@ -37,6 +37,10 @@ module.exports = (sequelize, Sequelize) => {
     'password': {
       type: Sequelize.STRING(64),
       is: /^[0-9a-f]{64}$/i
+    }, 
+    'role':{
+      type : Sequelize.STRING,
+      allowNull : false
     }
 
   }, {
