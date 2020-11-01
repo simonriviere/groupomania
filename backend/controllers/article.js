@@ -93,7 +93,7 @@ Articles.findByPk(id)
 }
 
 exports.findAll = (req, res, next) => {
-  Articles.findAll()
+  Articles.findAll({order: [['updatedAt', "DESC"], ['createdAt', "DESC"]] })
     .then(data => {
       res.send(data);
     })

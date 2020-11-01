@@ -173,8 +173,8 @@ export default class BoardUser extends Component {
                           Commentaire
                         </button>
                       )}
-
                       </div>
+          
                     <div>
                       {userCommentaires &&
                         userCommentaires.map(commentaire => (
@@ -186,9 +186,9 @@ export default class BoardUser extends Component {
                                   <div>
                                     <h5> Commentaire de {commentaire.userId} : </h5>
                                     <p>
-                                      {commentaire.message}
-                                      <br />
+                                      {commentaire.message} 
                                     </p>
+                                  
                                     {userId === commentaire.userId ? (
                                       <Link
                                         to={'/commentaire/' + commentaire.id}
@@ -196,12 +196,12 @@ export default class BoardUser extends Component {
                                       >
                                         Modifier {commentaire.id}
                                       </Link>
-
                                     ) : (
-                                        <div></div>
+                                      <div></div>
                                       )}
 
                                   </div>
+                                      
                                 </div>
                               ) : (
                                 <div></div>
