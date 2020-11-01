@@ -8,6 +8,7 @@ var corsOptions = {
   origin: "http://localhost:3001"
 };
 
+
 app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
@@ -24,6 +25,7 @@ db.sequelize.sync({ force: true }).then(() => {
 }); */
 // simple route
 app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/imagesProfile', express.static(path.join(__dirname, 'imagesProfile')));
 
 require("./routes/article")(app); 
 require("./routes/user")(app);

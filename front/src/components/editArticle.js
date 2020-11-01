@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import ArticleDataService from '../services/articles.service'
-import  { put } from 'axios'
-
+import { put } from 'axios'
 
 export default class EditArticle extends Component {
   constructor (props) {
@@ -59,6 +58,7 @@ export default class EditArticle extends Component {
     e.preventDefault() // Stop form submit
     this.updateArticle(this.state.file).then(response => {
       console.log(response.data)
+      window.location.href = '/articles/'
     })
   }
   onChange (e) {
@@ -94,81 +94,93 @@ export default class EditArticle extends Component {
         'content-type': 'multipart/form-data'
       }
     }
-    return put(url, formData, config).then(() => {
-      this.props.history.push('/articles')
-      window.location.reload()
-    })
+    return put(url, formData, config)
   }
 
   deleteArticle () {
-    ArticleDataService.delete(this.state.currentArticles.id)
-      .then(response => {
-        if (window.confirm('Voulez-vous supprimer votre article?')) {
+    const sup = window.confirm('Voulez-vous supprimer votre article?')
+
+    if (sup === true) {
+      ArticleDataService.delete(this.state.currentArticles.id)
+        .then(response => {
           this.props.history.push('/articles')
-        }
-      })
-      .catch(e => {
-        console.log(e)
-      })
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    }
   }
 
   render () {
     const { currentArticles } = this.state
+    console.log(currentArticles)
     return (
-      <form onSubmit={this.onFormSubmit} className='container submit-form '>
-        <div>
-          <div className='form-group '>
-            <label htmlFor='titre'>Titre</label>
-            <input
-              type='text'
-              className='form-control col-6 '
-              id='title'
-              required
-              value={currentArticles.titre}
-              onChange={this.onChangeTitle}
-              name='title'
-            />
-          </div>
+      <>
+        <div className='container'>
+          <div className='row justify-content-center'>
+            <form
+              onSubmit={this.onFormSubmit}
+              className='container submit-form text-center'
+            >
+              <div>
+                <div className='form-group '>
+                  <label htmlFor='titre'>Titre</label>
+                  <input
+                    type='text'
+                    className='form-control col-md-6  offset-md-3 '
+                    id='title'
+                    required
+                    value={currentArticles.titre}
+                    onChange={this.onChangeTitle}
+                    name='title'
+                  />
+                </div>
 
-          <div className='form-group '>
-            <label htmlFor='message'>Message</label>
-            <input
-              type='text'
-              className='form-control col-6 '
-              id='message'
-              required
-              value={currentArticles.message}
-              onChange={this.onChangeMessage}
-              name='message'
-            />
-          </div>
-          <div className='form-group col-6 '>
-            <input
-              type='file'
-              ref={this.fileInput}
-              name='myImage'
-              onChange={this.onChange}
-            />
-          </div>
+                <div className='form-group '>
+                  <label htmlFor='message'>Message</label>
+                  <textarea
+                    type='text'
+                    className='form-control col-md-6  offset-md-3 '
+                    id='message'
+                    required
+                    value={currentArticles.message}
+                    onChange={this.onChangeMessage}
+                    name='message'
+                  />
+                </div>
+                <div className='form-group col-sm-4 col-md-6  offset-md-3 '>
+                  <input
+                    type='file'
+                    ref={this.fileInput}
+                    name='myImage'
+                    onChange={this.onChange}
+                  />
+                </div>
 
-          <div className='container text-center'>
-            <div className='row '>
-              <div className='col-12 text-center'>
-                <button className='col-3 mt-4 btn btn-success' type='submit'>
-                  Modifier
-                </button>
+                <div className='container text-center'>
+                  <div className='row '>
+                    <div className='col-12 text-center'>
+                      <button
+                        className='mt-1 col-sm-12 col-md-3  btn btn-success '
+                        type='submit'
+                      >
+                        Modifier
+                      </button>
 
-                <button
-                  className='col-3 mt-4 ml-4 btn btn-danger'
-                  onClick={this.deleteArticle}
-                >
-                  Supprimer
-                </button>
+                      <button
+                        className='mt-1 col-sm-12 col-md-3 offset-md-2 btn btn-danger '
+                        onClick={this.deleteArticle}
+                      >
+                        Supprimer
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
+            </form>
           </div>
-        </div>
-      </form>
+      </div>
+        </>
     )
   }
 }

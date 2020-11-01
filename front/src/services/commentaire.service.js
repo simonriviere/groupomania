@@ -8,7 +8,7 @@ const API_URL = "http://localhost:3000/api";
 
 class CommentaireDataService {
   getAll() {
-    return axios.get(API_URL+`/com/`, { headers:authHeader()});
+    return axios.get(API_URL+ `/com/`, { headers:authHeader()});
   }
 
   get(id) {

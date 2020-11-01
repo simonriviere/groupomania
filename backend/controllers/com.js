@@ -84,9 +84,10 @@ Commentaires.findByPk(id)
 }
 
 exports.getAllCom = (req, res, next) => {
-  Commentaires.findAll()
+  Commentaires.findAll({order: [['updatedAt', "DESC"], ['createdAt', "DESC"]] })
     .then(data => {
       res.send(data);
+     
     })
     .catch(err => {
       res.status(500).send({

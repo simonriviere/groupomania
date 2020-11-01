@@ -1,19 +1,29 @@
 //Affiche le profil en fonction du jeton
-import React, { Component } from "react";
-import AuthService from "../services/auth.services";
-import UserService from "../services/user.service"
+import React, { Component } from 'react'
+import AuthService from '../services/auth.services'
+import UserService from '../services/user.service'
+import { Link } from 'react-router-dom'
+
 export default class Profile extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.getUser = this.getUser.bind(this)
+    this.deleteProfile = this.deleteProfile.bind(this)
 
     this.state = {
       currentUser: AuthService.getCurrentUser(),
-      userCo : [],
-    };
+      userCo: []
+    }
   }
-  getUser(id) {
-    UserService.get(id)
+  componentDidMount () {
+    this.getUser(this.props.match.params.id)
+  }
+
+  getUser (id) {
+   
+    const { currentUser } = this.state
+     if(currentUser != null){
+       UserService.getUser(currentUser.userId)
       .then(response => {
         this.setState({
           userCo: response.data
@@ -23,42 +33,71 @@ export default class Profile extends Component {
       .catch(e => {
         console.log(e)
       })
+     }
+
   }
-  
-  render() {
-    const { currentUser } = this.state;
-    const { userCo } = this.state
-    console.log(userCo)
+  deleteProfile () {
+    console.log(this.state.currentUser)
+    const sup = window.confirm('Voulez-vous supprimer votre profil?')
+    if (sup === true) {
+      UserService.delete(this.state.currentUser.userId)
+        .then(response => {
+          AuthService.logout()
+          this.props.history.push('/login')
+          window.location.reload()
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    }
+  }
+  render () {
+    const {  userCo } = this.state
+    
     return (
-      <div className="container">
-        <header className="jumbotron">
-          <h3>
-            <strong>{currentUser.pseudo}</strong>
-          </h3>
-        </header>
-        <p>
-          <strong>Token:</strong>{" "}
-          {currentUser.token.substring(0, 20)} ...{" "}
-          {currentUser.token.substr(currentUser.token.length - 20)}
-        </p>
-        <p>
-          <strong>Id:</strong>{" "}
-          {currentUser.userId}
-        </p>
-        <p>
-          <strong>Nom : </strong>{" "}
-          {userCo}
-        </p>
-        <p>
-          <strong>Email:</strong>{" "}
-          {currentUser.email}
-        </p>
-        <strong>Authorities:</strong>
-        <ul>
-          {currentUser.roles &&
-            currentUser.roles.map((role, index) => <li key={index}>{role}</li>)}
-        </ul>
+      <div>
+        <div className='container'>
+          {userCo &&
+            [userCo].map(userCo => (
+              <>
+                <img
+                  src={`${userCo.imageProfil}`}
+                  className='card-text'
+                  width='200'
+                  height='200'
+                  alt="Photo de profile de l'utilisateur "
+                ></img>
+                <p>
+                  <strong>Pseudo : </strong> {userCo.pseudo}
+                </p>
+
+                <p>
+                  <strong>Nom : </strong> {userCo.nom}
+                </p>
+                <p>
+                  <strong>Prénom : </strong> {userCo.prenom}
+                </p>
+
+                <p>
+                  <strong>Email:</strong> {userCo.email}
+                </p>
+  
+                <Link
+                  to={'/profil/' + userCo.id}
+                  className='mt-1 col-sm-12 col-md-3  btn btn-success '
+                >
+                  Modifier
+                </Link>
+                <button
+                  className='mt-1 col-sm-12 col-md-3 offset-md-2 btn btn-danger'
+                  onClick={this.deleteProfile}
+                >
+                  Supprimer
+                </button>
+              </>
+            ))}
+        </div>
       </div>
-    );
+    )
   }
 }

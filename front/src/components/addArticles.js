@@ -102,7 +102,7 @@ export default class AddArticle extends Component {
 
           <div className="form-group">
             <label htmlFor="message">Message</label>
-            <input
+            <textarea
               type="text"
               className="form-control"
               id="message"
@@ -121,7 +121,7 @@ export default class AddArticle extends Component {
               name="myImage"
               onChange={this.onChange} />
           </div>
-      <button className="btn btn-primary" type="submit">Télécharger</button>
+      <button className="mt-1 col-sm-12 col-md-3  btn btn-success" type="submit">Télécharger</button>
         
         </div>
         )}

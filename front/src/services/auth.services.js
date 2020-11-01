@@ -23,6 +23,7 @@ class AuthService {
   logout() {
     localStorage.removeItem("user");
   }
+  
    //enregister un nouveau utilisateur
   register(pseudo, email, password) {
     return axios.post(API_URL + "signup", {

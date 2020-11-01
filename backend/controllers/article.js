@@ -25,7 +25,6 @@ exports.createArticle = (req, res, next) => {
 
 exports.modifyArticle = (req, res, next) => {
   const id = req.params.id;
-  console.log(req.file)
   const modification = req.file ? {
     titre: req.body.titre,
     message: req.body.message,
@@ -34,6 +33,7 @@ exports.modifyArticle = (req, res, next) => {
   } : {    titre: req.body.titre,
     message: req.body.message,
     userId: req.body.userId,}
+    
   Articles.update(modification, {
     where: { id: id }
   })

@@ -13,9 +13,7 @@ export default class EditArticle extends Component {
     this.state = {
       currentComs: {
         id: null,
-    
         message: '',
-      
         userId: '',
         articleId :''
       }
@@ -69,16 +67,17 @@ export default class EditArticle extends Component {
   }
 
   deleteCom () {
+    const sup = window.confirm('Voulez-vous supprimer votre article?')
+    if(sup === true){
     CommentaireDataService.delete(this.state.currentComs.id)
       .then(response => {
-        if (window.confirm('Voulez-vous supprimer votre commentaire?')) {
           this.props.history.push('/articles')
-        }
       })
       .catch(e => {
         console.log(e)
       })
   }
+}
 
   render () {
     const { currentComs } = this.state

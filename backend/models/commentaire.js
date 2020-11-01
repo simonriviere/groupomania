@@ -22,7 +22,7 @@ module.exports = (sequelize, Sequelize) => {
          allowNull: false,
          requierd: true
        },
-/*        'createdAt': {
+       'createdAt': {
          allowNull: false,
          type: Sequelize.DATE,
          defaultValue: Sequelize.NOW,
@@ -31,7 +31,7 @@ module.exports = (sequelize, Sequelize) => {
          allowNull: false,
          type: Sequelize.DATE,
          defaultValue: Sequelize.NOW,
-       }, */
+       },
    
      }, {
        tableName: 'Commentaire',

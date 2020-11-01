@@ -6,7 +6,7 @@ import CommentaireDataService from '../services/commentaire.service'
 import { Link } from 'react-router-dom'
 const user = AuthService.getCurrentUser()
 export default class BoardUser extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.retrieveArticles = this.retrieveArticles.bind(this)
     this.setActiveCommentaire = this.setActiveCommentaire.bind(this)
@@ -27,7 +27,7 @@ export default class BoardUser extends Component {
       userId: 0
     }
   }
-  componentDidMount () {
+  componentDidMount() {
     this.retrieveArticles()
     this.getUserCommentaire()
     if (user) {
@@ -36,7 +36,7 @@ export default class BoardUser extends Component {
       })
     }
   }
-  retrieveArticles () {
+  retrieveArticles() {
     ArticleDataService.getAll()
       .then(response => {
         this.setState({
@@ -49,34 +49,35 @@ export default class BoardUser extends Component {
       })
   }
 
-  setActiveCommentaire (commentaire, id) {
+  setActiveCommentaire(commentaire, id) {
     this.setState({
       currentCommentaire: commentaire,
       articleId: id
     })
   }
-  setOffCommentaire (commentaire) {
+  setOffCommentaire(commentaire) {
     this.setState({
       currentCommentaire: null
     })
   }
-  getUserCommentaire () {
+  getUserCommentaire() {
     CommentaireDataService.getAll()
       .then(response => {
         this.setState({
           userCommentaires: response.data
         })
+        console.log(response.data)
       })
       .catch(e => {
         console.log(e)
       })
   }
-  onChangeCommentaire (e) {
+  onChangeCommentaire(e) {
     this.setState({
       message: e.target.value
     })
   }
-  saveCommentaire () {
+  saveCommentaire() {
     let data = {
       message: this.state.message,
       userId: user.userId,
@@ -85,32 +86,28 @@ export default class BoardUser extends Component {
     console.log(data)
     CommentaireDataService.create(data)
       .then(response => {
-        this.setState({
-          id: response.data.id,
-          message: response.data.message,
-          articlId: response.data.articleId,
-          userId: response.data.userId
-
-        })
-        console.log(response.data)
+        this.setState(({
+      userCommentaires : [...this.state.userCommentaires, response.data]
+        }) )
       })
       .catch(e => {
         console.log(e)
       })
   }
-  getCommentaire (id) {
+  getCommentaire(id) {
     CommentaireDataService.get(id)
       .then(response => {
         console.log(response.data)
         this.setState({
           userCommentaires: response.data
         })
+
       })
       .catch(e => {
         console.log(e)
       })
   }
-  deleteCommentaire () {
+  deleteCommentaire() {
     CommentaireDataService.delete(this.state.userCommentaires.id)
       .then(response => {
         console.log(response.data)
@@ -120,7 +117,7 @@ export default class BoardUser extends Component {
         console.log(e)
       })
   }
-  render () {
+  render() {
     const {
       articles,
       userId,
@@ -136,23 +133,25 @@ export default class BoardUser extends Component {
           {articles &&
             articles.map(article => (
               <>
-                <div className='card text-center' key={articleId}>
-                  <div className='card-body'>
-                    <h5 className='card-title'>{article.titre}</h5>
+                <div className='card text-center' >
+
+                
+                  <div className='card-body' key={article.id}>
+                    <h5 className='card-title'>{article.titre} </h5>
                     <img
                       src={`${article.image}`}
-                      className='card-text'
-                      width='500'
-                      height='450'
+                      className='card-img'
+                 
                       alt="gif fournit par l'utilisateur"
                     ></img>
                     <p className='card-text'>{article.message}</p>
-
+                    
+                  <div className="row justify-content-center">
                     {article.userId === userId && (
                       <>
                         <Link
                           to={'/articles/' + article.id}
-                          className='btn btn-primary col-3'
+                          className='mt-1 btn btn-primary col-lg-3 col-sm-12'
                         >
                           Modifier l'article
                         </Link>
@@ -161,52 +160,54 @@ export default class BoardUser extends Component {
 
                     {currentCommentaire && articleId === article.id ? (
                       <button
-                        onClick={() => this.setOffCommentaire(viewCommentaire)}
-                        className='ml-5 btn btn-primary col-3 '
+                      onClick={() => this.setOffCommentaire(viewCommentaire)}
+                      className=' mt-1 btn btn-primary offset-lg-2 col-lg-3 col-sm-12 '
                       >
                         Masquer les commentaires
                       </button>
                     ) : (
                       <button
-                        onClick={() =>
-                          this.setActiveCommentaire(viewCommentaire, article.id)
-                        }
-                        className='ml-5 btn btn-primary col-3 '
+                      onClick={() =>
+                        this.setActiveCommentaire(viewCommentaire, article.id)
+                      }
+                      className=' mt-1 btn btn-primary offset-lg-2 col-lg-3  col-sm-12  '
                       >
-                        Commentaire
-                      </button>
-                    )}
+                          Commentaire
+                        </button>
+                      )}
 
+                      </div>
                     <div>
                       {userCommentaires &&
                         userCommentaires.map(commentaire => (
-                          <div>
+                          <div key={commentaire.id}>
                             {currentCommentaire &&
-                            articleId === commentaire.articleId &&
-                            articleId === article.id ? (
-                              <div>
+                              articleId === commentaire.articleId &&
+                              articleId === article.id ? (
                                 <div>
-                            <h5> Commentaire de {commentaire.userId} : </h5>
-                                  <p>
-                                    {commentaire.message}
-                                    <br />
-
+                                  <div>
+                                    <h5> Commentaire de {commentaire.userId} : </h5>
+                                    <p>
+                                      {commentaire.message}
+                                      <br />
+                                    </p>
                                     {userId === commentaire.userId ? (
                                       <Link
                                         to={'/commentaire/' + commentaire.id}
-                                        className='badge badge-primary col-1'
+                                        className='badge badge-primary '
                                       >
                                         Modifier {commentaire.id}
                                       </Link>
+
                                     ) : (
-                                      <div></div>
-                                    )}
-                                  </p>
+                                        <div></div>
+                                      )}
+
+                                  </div>
                                 </div>
-                              </div>
-                            ) : (
-                              <div></div>
-                            )}
+                              ) : (
+                                <div></div>
+                              )}
                           </div>
                         ))}
                     </div>
@@ -231,8 +232,8 @@ export default class BoardUser extends Component {
                         </button>
                       </div>
                     ) : (
-                      <div></div>
-                    )}
+                        <div></div>
+                      )}
                   </div>
                 </div>
               </>
