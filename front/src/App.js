@@ -71,7 +71,7 @@ class App extends Component {
 
     return (
       <>
-        <Navbar bg='light' expand='lg'>
+        <Navbar bg='lighte' expand='lg'>
           <Navbar.Brand href='' >
             {!currentUser ? (
               <Link to={'/home'} className='navbar-brand'>

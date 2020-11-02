@@ -183,7 +183,7 @@ export default class BoardUser extends Component {
                       <>
                         <Link
                           to={'/articles/' + article.id}
-                          className='mt-1 btn btn-primary col-lg-3 col-sm-12'
+                          className='mt-1 btn btn-success col-lg-3 col-sm-12'
                         >
                           Modifier l'article
                         </Link>
@@ -193,7 +193,7 @@ export default class BoardUser extends Component {
                     {currentCommentaire && articleId === article.id ? (
                       <button
                       onClick={() => this.setOffCommentaire(viewCommentaire)}
-                      className=' mt-1 btn btn-primary offset-lg-2 col-lg-3 col-sm-12 '
+                      className=' mt-1 btn btn-success offset-lg-2 col-lg-3 col-sm-12 '
                       >
                         Masquer les commentaires
                       </button>
@@ -202,7 +202,7 @@ export default class BoardUser extends Component {
                       onClick={() =>
                         this.setActiveCommentaire(viewCommentaire, article.id)
                       }
-                      className=' mt-1 btn btn-primary offset-lg-2 col-lg-3  col-sm-12  '
+                      className=' mt-1 btn btn-success offset-lg-2 col-lg-3  col-sm-12  '
                       >
                           Commentaire
                         </button>
