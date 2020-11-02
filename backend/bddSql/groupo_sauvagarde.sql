@@ -63,7 +63,7 @@ CREATE TABLE `Articles` (
   UNIQUE KEY `titre` (`titre`),
   KEY `useId` (`userId`),
   CONSTRAINT `fk_userId` FOREIGN KEY (`userId`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=114 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,7 +72,7 @@ CREATE TABLE `Articles` (
 
 LOCK TABLES `Articles` WRITE;
 /*!40000 ALTER TABLE `Articles` DISABLE KEYS */;
-INSERT INTO `Articles` VALUES (111,'test sans file 2','test','http://localhost:3000/images/gif-anime.gif1604048693958.gif',81,'2020-10-30 09:04:53','2020-10-30 09:04:53'),(112,'Enfant qui sourti','test','http://localhost:3000/images/giphy.gif1604143371897.gif',81,'2020-10-31 11:22:51','2020-10-31 11:22:51');
+INSERT INTO `Articles` VALUES (116,'Chat volant','\\o/','http://localhost:3000/images/gif-anime.gif1604240393956.gif',102,'2020-11-01 14:19:53','2020-11-01 14:40:11'),(117,'enfant qui sourit','trop mignon! ','http://localhost:3000/images/giphy.gif1604246689485.gif',102,'2020-11-01 16:04:49','2020-11-01 16:04:49');
 /*!40000 ALTER TABLE `Articles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -97,7 +97,7 @@ CREATE TABLE `Commentaire` (
   KEY `fk_useId` (`userId`),
   CONSTRAINT `fk_comId` FOREIGN KEY (`articleId`) REFERENCES `Articles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_useId` FOREIGN KEY (`userId`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -106,6 +106,7 @@ CREATE TABLE `Commentaire` (
 
 LOCK TABLES `Commentaire` WRITE;
 /*!40000 ALTER TABLE `Commentaire` DISABLE KEYS */;
+INSERT INTO `Commentaire` VALUES (70,'Trop drole',NULL,NULL,116,102,'2020-11-01 14:40:20','2020-11-01 14:40:20'),(72,'lol',NULL,NULL,117,102,'2020-11-01 20:34:12','2020-11-01 20:34:12');
 /*!40000 ALTER TABLE `Commentaire` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -125,9 +126,11 @@ CREATE TABLE `User` (
   `imageProfil` varchar(250) DEFAULT NULL,
   `email` varchar(250) NOT NULL,
   `password` varchar(250) NOT NULL,
+  `role` char(4) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `ind_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `ind_unique` (`email`),
+  UNIQUE KEY `ind_pseudo_unique` (`pseudo`)
+) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -136,7 +139,7 @@ CREATE TABLE `User` (
 
 LOCK TABLES `User` WRITE;
 /*!40000 ALTER TABLE `User` DISABLE KEYS */;
-INSERT INTO `User` VALUES (35,NULL,NULL,'h','test',NULL,'riv.sim31@gmail.com','$2b$10$rw9h3wdVeBzf2uNulSnTa.6m0SAc0Fk678sEhu86jti4ZOzEm7gsO'),(81,'Riviere','Simo','h','nomis','http://localhost:3000/imagesProfile/eee.jpg1604140707308.jpg','monis@me.fr','$2b$10$bDPj3n7du0HQUdwNubXTW.jzHXT4WmrCgWaWLicFU1FzFqRStruKC'),(83,NULL,NULL,'h','admin',NULL,'admin@me.com','$2b$10$.d5UKOKxN5orjlKHfuKS1u296A1TlrH7ii2VaejhS6bQ/hTlp2iwG'),(93,NULL,NULL,'h','test1',NULL,'test1@Mf.fr','$2b$10$IokBu0/qoyiK82.nIc5ZXurOKJp5LGqxJJL06j6gOGjM0GY6BWfoS');
+INSERT INTO `User` VALUES (102,'Riviere','Simon','h','nomis','http://localhost:3000/imagesProfile/eee.jpg1604241738932.jpg','riviere.simon@me.fr','$2b$10$sYpo5ahPZOUFyV2SE7bx.ucqIB3/.Nsda8f0sFJT0yKySttFE0BO2','MODO'),(104,NULL,NULL,'h','user1',NULL,'user1@gmail.fr','$2b$10$t8QmwoK56PsSUqZ9KNV3wehSOvOFxq6x0bOZIwvPUrtLRpb26G/D6','USER');
 /*!40000 ALTER TABLE `User` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -149,4 +152,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-10-31 17:33:02
+-- Dump completed on 2020-11-02  7:59:46
