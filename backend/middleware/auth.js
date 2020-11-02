@@ -8,8 +8,9 @@ module.exports = (req, res, next) => {
 
   if (req.body.userId && req.body.userId !== userId) {
     console.log(userId);
-    throw 'Invalid user ID';
-  } else {
+    throw ' user ID est invalide';
+  }
+  else {
     next();
   }
 } catch {

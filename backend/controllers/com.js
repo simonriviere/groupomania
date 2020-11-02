@@ -17,7 +17,7 @@ exports.createCom = (req, res, next) => {
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Tutorial."
+          err.message || "Une erreur s'est produite lors de la création du commentaire "
       });
     });
 };
@@ -31,17 +31,17 @@ exports.modifyCom = (req, res, next) => {
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Commentaires was updated successfully."
+          message: "Le commentaires est modifié."
         });
       } else {
         res.send({
-          message: `Cannot update Commentaires with id=${id}. Maybe Commentaires was not found or req.body is empty!`
+          message: `Impossible de mettre à jour le commentaires avec l'id=${id}. `
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error updating Commentaires with id=" + id
+        message: "erreur lors de la mise à jour du commentaires avec l'id=" + id
       });
     });
 };
@@ -55,17 +55,17 @@ exports.deleteCom = (req, res, next) => {
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Commentaire was deleted successfully!"
+          message: "Commentaire supprimé!"
         });
       } else {
         res.send({
-          message: `Cannot delete Commentaire with id=${id}. Maybe Commentaire was not found!`
+          message: `Impossible de supprimer le commentaire avec l'id=${id}. `
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Could not delete Commentaire with id=" + id
+        message: "Impossible de supprimer le commentaire avec l'id=" + id
       });
     });
 };
@@ -78,7 +78,7 @@ Commentaires.findByPk(id)
  })
  .catch(err => {
    res.status(500).send({
-     message: "Error retrieving Tutorial with id=" + id
+     message: "Problème de récupération du commentaire avec l'id=" + id
    });
  });
 }
@@ -92,7 +92,7 @@ exports.getAllCom = (req, res, next) => {
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving tutorials."
+          err.message || "erreur lors de la récupération des commentaires"
       });
     });
 }; 

@@ -29,6 +29,9 @@ export default class BoardUser extends Component {
       })
       .catch(e => {
         console.log(e)
+        localStorage.removeItem("user");
+        this.props.history.push('/login')
+        window.location.reload()
       })
   }
 

@@ -164,7 +164,7 @@ export default class Register extends Component {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="password">Password</label>
+                  <label htmlFor="password">Mot de passe</label>
                   <Input
                     type="password"
                     className="form-control"
@@ -176,7 +176,7 @@ export default class Register extends Component {
                 </div>
 
                 <div className="form-group">
-                  <button className="btn btn-primary btn-block">Sign Up</button>
+                  <button className="btn btn-primary btn-block">S'enregistrer</button>
                 </div>
               </div>
             )}

@@ -47,11 +47,13 @@ export default class BoardUser extends Component {
       .then(response => {
         this.setState({
           articles: response.data
-          
         })
       })
       .catch(e => {
         console.log(e)
+        localStorage.removeItem("user");
+        this.props.history.push('/login')
+        window.location.reload()
       })
   }
 
@@ -129,8 +131,9 @@ export default class BoardUser extends Component {
        users : response.data
       });
     })
-    .catch(e => {
-      console.log(e);
+    .catch(error => {
+      console.log(error);
+      
     })
   }
   render() {

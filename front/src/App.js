@@ -35,6 +35,7 @@ class App extends Component {
       getCurrentUser: AuthService.getCurrentUser(),
       userCo: [],
       test: [],
+
     }
   }
   componentDidMount() {
@@ -57,6 +58,8 @@ class App extends Component {
         })
         .catch(e => {
           console.log(e)
+          localStorage.removeItem("user");
+          window.location.reload()
         })
     }
   }
@@ -64,6 +67,8 @@ class App extends Component {
   logOut() {
     AuthService.logout()
   }
+
+
 
   render() {
     const { currentUser, showModeratorBoard } = this.state
@@ -93,7 +98,7 @@ class App extends Component {
               {!currentUser && (
 
                 <Link to={'/home'} className='nav-link'>
-                  Home
+                  Accueil
                 </Link>
 
               )}
@@ -129,12 +134,12 @@ class App extends Component {
                 <div className='navbar-nav ml-auto'>
 
                   <Link to={'/profile'} className='nav-link'>
-                    Profile
+                    Voir son profile
                   </Link>
 
 
                   <a href='/login' className='nav-link' onClick={this.logOut}>
-                    LogOut
+                    Se déconnecter
                   </a>
 
                 </div>
@@ -142,11 +147,11 @@ class App extends Component {
                   <div className='navbar-nav ml-auto'>
 
                     <Link to={'/login'} className='nav-link'>
-                      Login
+                      Se connecter
                   </Link>
 
                     <Link to={'/register'} className='nav-link'>
-                      Sign Up
+                      S'enregistrer
                   </Link>
 
                   </div>

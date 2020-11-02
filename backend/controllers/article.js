@@ -17,7 +17,7 @@ exports.createArticle = (req, res, next) => {
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Tutorial."
+          err.message || "Une erreur s'est produite lors de la création de l'article "
       });
     });
 
@@ -40,17 +40,17 @@ exports.modifyArticle = (req, res, next) => {
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Articles was updated successfully."
+          message: "L'article est modifié"
         });
       } else {
         res.send({
-          message: `Cannot update Articles with id=${id}. Maybe Articles was not found or req.body is empty!`
+          message: `Impossible de mettre à jour l'article avec l'id=${id}.`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error updating Articles with id=" + id
+        message: "erreur lors de la mise à jour de l'article avec l'id=" + id
       });
     });
 };
@@ -64,17 +64,17 @@ exports.deleteArticle = (req, res, next) => {
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Article was deleted successfully!"
+          message: "Article supprimé!"
         });
       } else {
         res.send({
-          message: `Cannot delete Article with id=${id}. Maybe Article was not found!`
+          message: `Impossible de supprimer l'article avec l'id=${id}.`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Could not delete Article with id=" + id
+        message: "erreur lors de la suppression de l'article avec l'id=" + id
       });
     });
 };
@@ -87,7 +87,7 @@ Articles.findByPk(id)
  })
  .catch(err => {
    res.status(500).send({
-     message: "Error retrieving Tutorial with id=" + id
+     message: "Problème de récupération de l'article avec l'id=" + id
    });
  });
 }
@@ -100,7 +100,7 @@ exports.findAll = (req, res, next) => {
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving tutorials."
+          err.message || "erreur lors de la récupération des articles"
       });
     });
 };

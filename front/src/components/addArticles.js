@@ -119,6 +119,7 @@ export default class AddArticle extends Component {
               type="file"
               ref={this.fileInput} 
               name="myImage"
+              required
               onChange={this.onChange} />
           </div>
       <button className="mt-1 col-sm-12 col-md-3  btn btn-success" type="submit">Télécharger</button>
