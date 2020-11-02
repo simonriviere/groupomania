@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import ArticleDataService from '../services/articles.service'
 import { put } from 'axios'
+import AuthService from '../services/auth.services'
+import UserService from '../services/user.service'
 
 export default class EditArticle extends Component {
   constructor (props) {
@@ -14,8 +16,12 @@ export default class EditArticle extends Component {
         message: '',
         image: null,
         userId: '',
+        modo : false,
+        
         submitted: false
-      }
+      },
+      currentUser: AuthService.getCurrentUser(),
+      userCo:[]
     }
 
     this.onChangeTitle = this.onChangeTitle.bind(this)
@@ -25,10 +31,13 @@ export default class EditArticle extends Component {
     this.updateArticle = this.updateArticle.bind(this)
     this.deleteArticle = this.deleteArticle.bind(this)
     this.onFormSubmit = this.onFormSubmit.bind(this)
+    this.getUser = this.getUser.bind(this)
+
   }
 
   componentDidMount () {
     this.getArticle(this.props.match.params.id)
+    this.getUser(this.state.currentArticles.userId)
   }
   onChangeTitle (e) {
     const titre = e.target.value
@@ -95,26 +104,44 @@ export default class EditArticle extends Component {
     }
     return put(url, formData, config)
   }
-
+  
   deleteArticle () {
     const sup = window.confirm('Voulez-vous supprimer votre article?')
-
+    
     if (sup === true) {
       ArticleDataService.delete(this.state.currentArticles.id)
-        .then(response => {
-          this.props.history.push('/articles')
+      .then(response => {
+        this.props.history.push('/articles')
+      })
+      .catch(e => {
+        console.log(e)
+      })
+    }
+  }
+  
+   getUser(id) {
+      UserService.getUser(this.state.currentUser.userId)
+      .then(response => {
+        this.setState({
+          userCo: response.data
+        })
+        console.log(response.data)
+        if (response.data) {
+          this.setState({
+            modo : this.state.userCo.role.includes('MODO')
+          })
+        }
         })
         .catch(e => {
           console.log(e)
         })
-    }
-  }
-
+      } 
   render () {
-    const { currentArticles } = this.state
+    const {modo, currentArticles, currentUser } = this.state
 
     return (
       <>
+      {((currentArticles.userId === currentUser.userId ) || modo)  &&
         <div className='container'>
           <div className='row justify-content-center'>
             <form
@@ -179,6 +206,7 @@ export default class EditArticle extends Component {
             </form>
           </div>
       </div>
+      }
         </>
     )
   }

@@ -31,7 +31,11 @@ exports.signup = (req, res, next) => {
       };
       Users.create(user)
       .then(user => {
-        res.send(user);
+        res.send({user,
+          message : "Utilisateur bien enregistré"
+        
+        });
+        
       })
       .catch(err => {
         res.status(500).send({

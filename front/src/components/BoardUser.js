@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import AuthService from '../services/auth.services'
 import ArticleDataService from '../services/articles.service'
 import CommentaireDataService from '../services/commentaire.service'
+import UserService from'../services/user.service'
+import Moment from 'react-moment';
+import 'moment-timezone';
 
 import { Link } from 'react-router-dom'
 const user = AuthService.getCurrentUser()
@@ -16,6 +19,7 @@ export default class BoardUser extends Component {
     this.onChangeCommentaire = this.onChangeCommentaire.bind(this)
     this.deleteCommentaire = this.deleteCommentaire.bind(this)
     this.getCommentaire = this.getCommentaire.bind(this)
+    this.getAllUser = this.getAllUser.bind(this)
 
     this.state = {
       articles: [],
@@ -23,6 +27,7 @@ export default class BoardUser extends Component {
       articleId: null,
       viewCommentaire: [],
       userCommentaires: [],
+      users : [],
       message: '',
       userId: 0
     }
@@ -30,6 +35,7 @@ export default class BoardUser extends Component {
   componentDidMount() {
     this.retrieveArticles()
     this.getUserCommentaire()
+    this.getAllUser()
     if (user) {
       this.setState({
         userId: user.userId
@@ -41,7 +47,7 @@ export default class BoardUser extends Component {
       .then(response => {
         this.setState({
           articles: response.data
-          //currentArticles: response.data
+          
         })
       })
       .catch(e => {
@@ -115,6 +121,18 @@ export default class BoardUser extends Component {
         console.log(e)
       })
   }
+
+  getAllUser(){
+    UserService.getAllUser()
+    .then(response => {
+      this.setState({
+       users : response.data
+      });
+    })
+    .catch(e => {
+      console.log(e);
+    })
+  }
   render() {
     const {
       articles,
@@ -122,27 +140,43 @@ export default class BoardUser extends Component {
       viewCommentaire,
       userCommentaires,
       currentCommentaire,
+      users,
       articleId
     } = this.state
 
     return (
-      <div>
-        <div className='container'>
+      <div>      
+      <h1 className="text-center">Publications </h1>
+        
+        <div className='container' >
           {articles &&
             articles.map(article => (
-              <>
-                <div className='card text-center' >
-
-                
-                  <div className='card-body' key={article.id}>
-                    <h5 className='card-title'>{article.titre} </h5>
+              <div className='card' key={`article_${article.id}`} >
+                  <div className='card-body' >
+                {users &&
+                 users.map(user => ( article.userId === user.id && (
+                   <div  key={`user_${user.id}`} >
+                     {user.imageProfil &&                      
+                  <img
+                  src={`${user.imageProfil}`}
+                  className='card-text imgProfile'
+                  width='50'
+                  height='50'
+                  alt="utilisateur"
+                ></img>
+                     }
+                   <h3 className="nom"> De {user.nom ? (user.nom + ' ' + user.prenom) : (user.pseudo) }</h3>
+                   </div>
+                 )))
+                }
+                <p className="date">Le <Moment format="DD/MM/YYYY à hh:mm ">{article.createdAt}</Moment></p>
+                    <h4 className='card-title  text-center'>{article.titre} </h4>
                     <img
                       src={`${article.image}`}
                       className='card-img'
-                 
                       alt="gif fournit par l'utilisateur"
                     ></img>
-                    <p className='card-text'>{article.message}</p>
+                    <p className='card-text  text-center'>{article.message}</p>
                     
                   <div className="row justify-content-center">
                     {article.userId === userId && (
@@ -178,27 +212,31 @@ export default class BoardUser extends Component {
                     <div>
                       {userCommentaires &&
                         userCommentaires.map(commentaire => (
-                          <div key={commentaire.id}>
+                          <div key={`commente_${commentaire.id}`}>
                             {currentCommentaire &&
                               articleId === commentaire.articleId &&
                               articleId === article.id ? (
                                 <div>
                                   <div>
-                                    <h5> Commentaire de {commentaire.userId} : </h5>
+                                    {users &&
+                                     users.map(user => ( commentaire.userId === user.id && (
+                                  <div  key={`userCom_${user.id}`} >
+                                    <h5 className="comme"> Commentaire de {user.nom ? (user.nom + ' ' + user.prenom) : (user.pseudo) }  : </h5> 
+                                    </div>
+                                    )))
+                                    }
                                     <p>
                                       {commentaire.message} 
                                     </p>
                                   
-                                    {userId === commentaire.userId ? (
+                                    {userId === commentaire.userId  && (
                                       <Link
                                         to={'/commentaire/' + commentaire.id}
                                         className='badge badge-primary '
                                       >
                                         Modifier {commentaire.id}
                                       </Link>
-                                    ) : (
-                                      <div></div>
-                                      )}
+                                    )}
 
                                   </div>
                                       
@@ -234,10 +272,12 @@ export default class BoardUser extends Component {
                       )}
                   </div>
                 </div>
-              </>
+              
             ))}
         </div>
+       
       </div>
+      
     )
   }
 }

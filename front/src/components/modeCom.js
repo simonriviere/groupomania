@@ -53,11 +53,10 @@ export default class BoardUser extends Component {
 
             </tr>
           </thead>
+          <tbody>
           {commentaires &&
             commentaires.map(commentaire => (
-              <>
-                <thead>
-                  <tr>
+                  <tr key={`verifCom_${commentaire.id}`}>
                     <td>{commentaire.message}</td>
                     <td>{commentaire.articleId}</td>
                     <td>
@@ -71,9 +70,10 @@ export default class BoardUser extends Component {
                     <td>{commentaire.updatedAt}</td>
 
                   </tr>
-                </thead>
-              </>
+                
+              
             ))}
+          </tbody>
         </table>
       </div>
        

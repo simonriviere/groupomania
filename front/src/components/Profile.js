@@ -52,16 +52,13 @@ export default class Profile extends Component {
     }
   }
   render () {
-    const {  userCo } = this.state
+    const { userCo } = this.state
     return (
       <div>
         <div className='container'>
-          {userCo &&
-            [userCo].map(userCo => (
-              <>
                 <img
                   src={`${userCo.imageProfil}`}
-                  className='card-text'
+                  className='card-text imgProfile'
                   width='200'
                   height='200'
                   alt="utilisateur "
@@ -93,8 +90,7 @@ export default class Profile extends Component {
                 >
                   Supprimer
                 </button>
-              </>
-            ))}
+         
         </div>
       </div>
     )

@@ -1,14 +1,12 @@
 import React, { Component } from 'react'
 import CommentaireDataService from '../services/commentaire.service'
 import { Link } from 'react-router-dom'
+import AuthService from '../services/auth.services'
+import UserService from '../services/user.service'
 
 export default class EditArticle extends Component {
   constructor (props) {
     super(props)
-    this.onChangeMessage = this.onChangeMessage.bind(this)
-    this.getCom = this.getCom.bind(this)
-    this.updateCom = this.updateCom.bind(this)
-    this.deleteCom = this.deleteCom.bind(this)
 
     this.state = {
       currentComs: {
@@ -16,12 +14,23 @@ export default class EditArticle extends Component {
         message: '',
         userId: '',
         articleId :''
-      }
+      },
+      modo : false,
+      currentUser: AuthService.getCurrentUser(),
+      userCo:[]
     }
+
+    this.onChangeMessage = this.onChangeMessage.bind(this)
+    this.getCom = this.getCom.bind(this)
+    this.updateCom = this.updateCom.bind(this)
+    this.deleteCom = this.deleteCom.bind(this)
+    this.getUser = this.getUser.bind(this)
   }
 
   componentDidMount () {
     this.getCom(this.props.match.params.id)
+    this.getUser(this.state.currentComs.userId)
+
   }
 
   onChangeMessage (e) {
@@ -78,12 +87,32 @@ export default class EditArticle extends Component {
       })
   }
 }
+  
+getUser(id) {
+  UserService.getUser(this.state.currentUser.userId)
+  .then(response => {
+    this.setState({
+      userCo: response.data
+    })
+    console.log(response.data)
+    if (response.data) {
+      this.setState({
+        modo : this.state.userCo.role.includes('MODO')
+      })
+    }
+    })
+    .catch(e => {
+      console.log(e)
+    })
+  }
+
 
   render () {
-    const { currentComs } = this.state
+    const { currentComs, currentUser, modo } = this.state
 
     return (
       <div className='container submit-form '>
+      {((currentComs.userId === currentUser.userId)||modo) &&
         <div>
 
 
@@ -105,13 +134,14 @@ export default class EditArticle extends Component {
              <div className="col-12 text-center">
                   <Link
                 onClick={this.updateCom}
-                to={'/articles/'}
+                to={'/articles'}
                 className=' col-3 mt-4 btn btn-success'
               >
                 Modifier
               </Link>
               
               <Link
+              to={'/articles'}
                     className='col-3 mt-4 ml-4 btn btn-danger'
                 onClick={this.deleteCom}
               >
@@ -124,6 +154,7 @@ export default class EditArticle extends Component {
             </div>
           </div>
         </div>
+  }
       </div>
     )
   }

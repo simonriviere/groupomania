@@ -5,24 +5,26 @@ import './App.css'
 import {
   Navbar,
   Nav,
+  NavDropdown
 } from 'react-bootstrap'
 import UserService from './services/user.service'
-import logo from'./logo/icon-left-font-monochrome-black.svg'
+import logo from './logo/icon-left-font-monochrome-black.svg'
 import AuthService from './services/auth.services'
 import Login from './components/Login'
 import Register from './components/Register'
 import Home from './components/Home'
 import Profile from './components/Profile'
 import BoardUser from './components/BoardUser'
-import BoardModerator from './components/BoardModerator'
+
 import BoardAdmin from './components/BoardAdmin'
 import AddArticle from './components/addArticles'
 import EditArticle from './components/editArticle'
 import EditCom from './components/editCom'
 import EditProfil from './components/editProfil'
-
+import ModeCom from './components/modeCom'
+import ModeArticles from './components/modeArticles'
 class App extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.logOut = this.logOut.bind(this)
     this.getUser = this.getUser.bind(this)
@@ -30,134 +32,137 @@ class App extends Component {
     this.state = {
       showModeratorBoard: false,
       currentUser: undefined,
-      getCurrentUser : AuthService.getCurrentUser(),
+      getCurrentUser: AuthService.getCurrentUser(),
       userCo: [],
-      test : [],
+      test: [],
     }
   }
-  componentDidMount () {
+  componentDidMount() {
     this.getUser()
   }
-  getUser (id) {
+  getUser(id) {
     const { getCurrentUser } = this.state
-     if(getCurrentUser != null){
-       UserService.getUser(getCurrentUser.userId)
-      .then(response => {
-        this.setState({
-          userCo: response.data
-        })
-        if (response.data) {
+    if (getCurrentUser != null) {
+      UserService.getUser(getCurrentUser.userId)
+        .then(response => {
           this.setState({
-           currentUser: this.state.userCo,
-           showModeratorBoard: this.state.userCo.role.includes('MODO'),
+            userCo: response.data
           })
-        }
-      })
-      .catch(e => {
-        console.log(e)
-      })
-     }
+          if (response.data) {
+            this.setState({
+              currentUser: this.state.userCo,
+              showModeratorBoard: this.state.userCo.role.includes('MODO'),
+            })
+          }
+        })
+        .catch(e => {
+          console.log(e)
+        })
     }
+  }
 
-  logOut () {
+  logOut() {
     AuthService.logout()
   }
 
-  render () {
-    const { currentUser, showModeratorBoard, showAdminBoard} = this.state
+  render() {
+    const { currentUser, showModeratorBoard } = this.state
     const token = localStorage.getItem('user')
-    console.log(token)
+
     return (
       <>
         <Navbar bg='light' expand='lg'>
           <Navbar.Brand href='' >
-            <Link to={'/articles'} className='navbar-brand'>
-             <img src={logo} alt="Logo groupomania" ></img>
-            </Link>
+            {!currentUser ? (
+              <Link to={'/home'} className='navbar-brand'>
+                <img src={logo} alt="Logo groupomania" ></img>
+              </Link>
+            ) : (
+                <Link to={'/articles'} className='navbar-brand'>
+                  <img src={logo} alt="Logo groupomania" ></img>
+                </Link>
+              )
+
+            }
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls='basic-navbar-nav '  />
+
+          <Navbar.Toggle aria-controls='basic-navbar-nav ' />
           <Navbar.Collapse id='basic-navbar-nav ' >
             <Nav className='ml-auto '>
-            {!currentUser && (
-           
+
+              {!currentUser && (
+
                 <Link to={'/home'} className='nav-link'>
                   Home
                 </Link>
-             
-            )}
 
-            {showModeratorBoard && token && (
-              
-                <Link to={'/mod'} className='nav-link'>
-                  Modération des commentaires
+              )}
+
+              {showModeratorBoard && token && (
+                <NavDropdown title="Modérateur" id="collasible-nav-dropdown">
+                  <NavDropdown.Item href="/modCom">Commentaires</NavDropdown.Item>
+                  <NavDropdown.Item href="/modArticle">Articles</NavDropdown.Item>
+
+                </NavDropdown>
+
+              )}
+
+
+              {currentUser && token && (
+
+
+                <Link to={'/articles'} className='nav-link'>
+                  Articles
                 </Link>
-             
-            )}
 
-            {showAdminBoard && token && (
-             
-                <Link to={'/admin'} className='nav-link'>
-                  Admin Board
-                </Link>
-             
-            )}
+              )}
+              {currentUser && token && (
 
-            {currentUser && token && (
-         
-        
-              <Link to={'/articles'} className='nav-link'>
-                Articles
-              </Link>
-           
-            )}
-            {currentUser && token && (
-             
                 <Link to={'/addArticle'} className='nav-link'>
                   {' '}
                   Ajouter un article{' '}
                 </Link>
-             
-            )}
 
-            {currentUser && token ? (
-              <div className='navbar-nav ml-auto'>
-                
+              )}
+
+              {currentUser && token ? (
+                <div className='navbar-nav ml-auto'>
+
                   <Link to={'/profile'} className='nav-link'>
                     Profile
                   </Link>
-                
-               
-                  <Link to={'/login'} className='nav-link' onClick={this.logOut}>
-                    LogOut
-                  </Link>
-               
-              </div>
-            ) : (
-              <div className='navbar-nav ml-auto'>
-               
-                  <Link to={'/login'} className='nav-link'>
-                    Login
-                  </Link>
-               
 
-               
-                  <Link to={'/register'} className='nav-link'>
-                    Sign Up
+
+                  <a href='/login' className='nav-link' onClick={this.logOut}>
+                    LogOut
+                  </a>
+
+                </div>
+              ) : (
+                  <div className='navbar-nav ml-auto'>
+
+                    <Link to={'/login'} className='nav-link'>
+                      Login
                   </Link>
-         
-              </div>
-            )}
-  
-  </Nav> 
-    
-</Navbar.Collapse>
-</Navbar>
+
+                    <Link to={'/register'} className='nav-link'>
+                      Sign Up
+                  </Link>
+
+                  </div>
+                )}
+
+            </Nav>
+
+          </Navbar.Collapse>
+        </Navbar>
         <div className='container mt-3'>
           <Switch>
             <Route exact path={['/', '/home']} component={Home} />
             <Route exact path='/login' component={Login} />
             <Route path='/admin' component={BoardAdmin} />
-            <Route path='/mod' component={BoardModerator} />
+            <Route path='/modCom' component={ModeCom} />
+            <Route path='/modArticle' component={ModeArticles} />
             <Route exact path='/register' component={Register} />
             <Route exact path='/profile' component={Profile} />
             <Route exact path='/articles' component={BoardUser} />

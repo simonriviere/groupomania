@@ -11,7 +11,7 @@ const multerProfile = require('../middleware/multerProfile-config');
     router.put('/:id', auth, multerProfile, userCtrl.modifyUser);
     router.delete('/:id',auth, userCtrl.deleteUser);
     router.get('/:id',auth,  userCtrl.getOneUser)
-    router.get('/', auth, userCtrl.getAllUser);
+    router.get('/',  userCtrl.getAllUser);
 
    app.use('/api/auth', router)
 }
