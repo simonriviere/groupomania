@@ -79,7 +79,7 @@ export default class AddArticle extends Component {
       <form onSubmit={this.onFormSubmit} className="submit-form">
    {this.state.submitted ? (
           <div>
-            <h4>Votre article est enregistrer !</h4>
+            <h4>Votre article est bien enregistré !</h4>
             <Link to={'/articles/'} className="btn btn-success" onClick={this.submittedFalse}>
             Voir les articles
               </Link>

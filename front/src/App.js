@@ -134,7 +134,7 @@ class App extends Component {
                 <div className='navbar-nav ml-auto'>
 
                   <Link to={'/profile'} className='nav-link'>
-                    Voir son profile
+                    Profile
                   </Link>
 
 

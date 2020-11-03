@@ -107,7 +107,6 @@ export default class EditArticle extends Component {
   
   deleteArticle () {
     const sup = window.confirm('Voulez-vous supprimer votre article?')
-    
     if (sup === true) {
       ArticleDataService.delete(this.state.currentArticles.id)
       .then(response => {

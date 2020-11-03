@@ -51,9 +51,7 @@ export default class BoardUser extends Component {
       })
       .catch(e => {
         console.log(e)
-        localStorage.removeItem("user");
-        this.props.history.push('/login')
-        window.location.reload()
+
       })
   }
 
@@ -133,7 +131,7 @@ export default class BoardUser extends Component {
     })
     .catch(error => {
       console.log(error);
-      
+   
     })
   }
   render() {
@@ -183,17 +181,17 @@ export default class BoardUser extends Component {
                     
                   <div className="row justify-content-center">
                     {article.userId === userId && (
-                      <>
+                      
                         <Link
                           to={'/articles/' + article.id}
                           className='mt-1 btn btn-success col-lg-3 col-sm-12'
                         >
                           Modifier l'article
                         </Link>
-                      </>
+                      
                     )}
 
-                    {currentCommentaire && articleId === article.id ? (
+                    {currentCommentaire && (articleId === article.id) ? (
                       <button
                       onClick={() => this.setOffCommentaire(viewCommentaire)}
                       className=' mt-1 btn btn-success offset-lg-2 col-lg-3 col-sm-12 '
