@@ -52,8 +52,6 @@ export default class BoardUser extends Component {
               <th>User Id</th>
                <th>Création</th>
               <th>Modification</th>
-            
-
             </tr>
           </thead>
           <tbody>

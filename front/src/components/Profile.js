@@ -56,6 +56,7 @@ export default class Profile extends Component {
     return (
       <div>
         <div className='container'>
+        {userCo.imageProfil && 
                 <img
                   src={`${userCo.imageProfil}`}
                   className='card-text imgProfile'
@@ -63,6 +64,7 @@ export default class Profile extends Component {
                   height='200'
                   alt="utilisateur "
                 ></img>
+        }
                 <p>
                   <strong>Pseudo : </strong> {userCo.pseudo}
                 </p>

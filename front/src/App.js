@@ -40,7 +40,9 @@ class App extends Component {
   }
   componentDidMount() {
     this.getUser()
+    
   }
+
   getUser(id) {
     const { getCurrentUser } = this.state
     if (getCurrentUser != null) {
@@ -58,8 +60,6 @@ class App extends Component {
         })
         .catch(e => {
           console.log(e)
-          localStorage.removeItem("user");
-          window.location.reload()
         })
     }
   }
@@ -162,13 +162,14 @@ class App extends Component {
           </Navbar.Collapse>
         </Navbar>
         <div className='container mt-3'>
+
           <Switch>
             <Route exact path={['/', '/home']} component={Home} />
+            <Route exact path='/register' component={Register} />
             <Route exact path='/login' component={Login} />
             <Route path='/admin' component={BoardAdmin} />
             <Route path='/modCom' component={ModeCom} />
             <Route path='/modArticle' component={ModeArticles} />
-            <Route exact path='/register' component={Register} />
             <Route exact path='/profile' component={Profile} />
             <Route exact path='/articles' component={BoardUser} />
             <Route exact path='/addArticle' component={AddArticle} />

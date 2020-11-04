@@ -17,7 +17,6 @@ export default class BoardUser extends Component {
     this.getUserCommentaire = this.getUserCommentaire.bind(this)
     this.saveCommentaire = this.saveCommentaire.bind(this)
     this.onChangeCommentaire = this.onChangeCommentaire.bind(this)
-    this.deleteCommentaire = this.deleteCommentaire.bind(this)
     this.getCommentaire = this.getCommentaire.bind(this)
     this.getAllUser = this.getAllUser.bind(this)
 
@@ -48,6 +47,7 @@ export default class BoardUser extends Component {
         this.setState({
           articles: response.data
         })
+  
       })
       .catch(e => {
         console.log(e)
@@ -98,6 +98,7 @@ export default class BoardUser extends Component {
         console.log(e)
       })
   }
+
   getCommentaire(id) {
     CommentaireDataService.get(id)
       .then(response => {
@@ -106,16 +107,6 @@ export default class BoardUser extends Component {
           userCommentaires: response.data
         })
 
-      })
-      .catch(e => {
-        console.log(e)
-      })
-  }
-  deleteCommentaire() {
-    CommentaireDataService.delete(this.state.userCommentaires.id)
-      .then(response => {
-        console.log(response.data)
-        this.props.history.push('/commentaires')
       })
       .catch(e => {
         console.log(e)
@@ -170,7 +161,7 @@ export default class BoardUser extends Component {
                    </div>
                  )))
                 }
-                <p className="date">Le <Moment format="DD/MM/YYYY à hh:mm ">{article.createdAt}</Moment></p>
+                <p className="date">Le <Moment format="DD/MM/YYYY à hh:mm ">{article.updatedAt}</Moment></p>
                     <h4 className='card-title  text-center'>{article.titre} </h4>
                     <img
                       src={`${article.image}`}

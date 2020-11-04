@@ -50,6 +50,7 @@ export default class AddArticle extends Component {
       submitted: false
     })
   }
+  
   saveArticle() {
     const url = "http://localhost:3000/api/articles"
     const user = JSON.parse(localStorage.getItem('user'));
